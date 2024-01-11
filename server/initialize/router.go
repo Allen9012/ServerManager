@@ -4,10 +4,10 @@ import (
 	swaggerFiles "github.com/swaggo/files"
 	"net/http"
 
-	"github.com/flipped-aurora/gin-vue-admin/server/docs"
-	"github.com/flipped-aurora/gin-vue-admin/server/global"
-	"github.com/flipped-aurora/gin-vue-admin/server/middleware"
-	"github.com/flipped-aurora/gin-vue-admin/server/router"
+	"github.com/Allen9012/ServerManager/server/docs"
+	"github.com/Allen9012/ServerManager/server/global"
+	"github.com/Allen9012/ServerManager/server/middleware"
+	"github.com/Allen9012/ServerManager/server/router"
 	"github.com/gin-gonic/gin"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )

@@ -2,13 +2,13 @@ package system
 
 import (
 	"errors"
-	systemReq "github.com/flipped-aurora/gin-vue-admin/server/model/system/request"
+	systemReq "github.com/Allen9012/ServerManager/server/model/system/request"
 	"strconv"
 
-	"github.com/flipped-aurora/gin-vue-admin/server/global"
-	"github.com/flipped-aurora/gin-vue-admin/server/model/common/request"
-	"github.com/flipped-aurora/gin-vue-admin/server/model/system"
-	"github.com/flipped-aurora/gin-vue-admin/server/model/system/response"
+	"github.com/Allen9012/ServerManager/server/global"
+	"github.com/Allen9012/ServerManager/server/model/common/request"
+	"github.com/Allen9012/ServerManager/server/model/system"
+	"github.com/Allen9012/ServerManager/server/model/system/response"
 	"gorm.io/gorm"
 )
 

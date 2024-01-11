@@ -2,10 +2,10 @@ package initialize
 
 import (
 	"context"
+	"github.com/Allen9012/ServerManager/server/model/example"
+	sysModel "github.com/Allen9012/ServerManager/server/model/system"
+	"github.com/Allen9012/ServerManager/server/service/system"
 	adapter "github.com/casbin/gorm-adapter/v3"
-	"github.com/flipped-aurora/gin-vue-admin/server/model/example"
-	sysModel "github.com/flipped-aurora/gin-vue-admin/server/model/system"
-	"github.com/flipped-aurora/gin-vue-admin/server/service/system"
 	"gorm.io/gorm"
 )
 

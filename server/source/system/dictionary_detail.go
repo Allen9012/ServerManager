@@ -3,8 +3,8 @@ package system
 import (
 	"context"
 	"fmt"
-	sysModel "github.com/flipped-aurora/gin-vue-admin/server/model/system"
-	"github.com/flipped-aurora/gin-vue-admin/server/service/system"
+	sysModel "github.com/Allen9012/ServerManager/server/model/system"
+	"github.com/Allen9012/ServerManager/server/service/system"
 	"github.com/pkg/errors"
 	"gorm.io/gorm"
 )
