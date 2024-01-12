@@ -22,7 +22,6 @@ func Email(To, subject string, body string) error {
 	return send(to, subject, body)
 }
 
-//@author: [SliverHorn](https://github.com/SliverHorn)
 //@function: ErrorToEmail
 //@description: 给email中间件错误发送邮件到指定邮箱
 //@param: subject string, body string

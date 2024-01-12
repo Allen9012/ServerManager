@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-//@author: [piexlmax](https://github.com/piexlmax)
+//@author: Allen
 //@function: StructToMap
 //@description: 利用反射将结构体转化为map
 //@param: obj interface{}
@@ -28,7 +28,7 @@ func StructToMap(obj interface{}) map[string]interface{} {
 	return data
 }
 
-//@author: [piexlmax](https://github.com/piexlmax)
+//@author: Allen
 //@function: ArrayToString
 //@description: 将数组格式化为字符串
 //@param: array []interface{}

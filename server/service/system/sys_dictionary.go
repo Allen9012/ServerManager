@@ -8,7 +8,7 @@ import (
 	"gorm.io/gorm"
 )
 
-//@author: [piexlmax](https://github.com/piexlmax)
+//@author: Allen
 //@function: DeleteSysDictionary
 //@description: 创建字典数据
 //@param: sysDictionary model.SysDictionary
@@ -24,7 +24,7 @@ func (dictionaryService *DictionaryService) CreateSysDictionary(sysDictionary sy
 	return err
 }
 
-//@author: [piexlmax](https://github.com/piexlmax)
+//@author: Allen
 //@function: DeleteSysDictionary
 //@description: 删除字典数据
 //@param: sysDictionary model.SysDictionary
@@ -49,7 +49,7 @@ func (dictionaryService *DictionaryService) DeleteSysDictionary(sysDictionary sy
 	return
 }
 
-//@author: [piexlmax](https://github.com/piexlmax)
+//@author: Allen
 //@function: UpdateSysDictionary
 //@description: 更新字典数据
 //@param: sysDictionary *model.SysDictionary
@@ -73,7 +73,7 @@ func (dictionaryService *DictionaryService) UpdateSysDictionary(sysDictionary *s
 	return err
 }
 
-//@author: [piexlmax](https://github.com/piexlmax)
+//@author: Allen
 //@function: GetSysDictionary
 //@description: 根据id或者type获取字典单条数据
 //@param: Type string, Id uint
@@ -92,8 +92,8 @@ func (dictionaryService *DictionaryService) GetSysDictionary(Type string, Id uin
 	return
 }
 
-//@author: [piexlmax](https://github.com/piexlmax)
-//@author: [SliverHorn](https://github.com/SliverHorn)
+//@author: Allen
+
 //@function: GetSysDictionaryInfoList
 //@description: 分页获取字典列表
 //@param: info request.SysDictionarySearch

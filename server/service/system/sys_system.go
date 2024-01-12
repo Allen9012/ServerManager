@@ -8,7 +8,7 @@ import (
 	"go.uber.org/zap"
 )
 
-//@author: [piexlmax](https://github.com/piexlmax)
+//@author: Allen
 //@function: GetSystemConfig
 //@description: 读取配置文件
 //@return: conf config.Server, err error
@@ -20,7 +20,7 @@ func (systemConfigService *SystemConfigService) GetSystemConfig() (conf config.S
 }
 
 // @description   set system config,
-//@author: [piexlmax](https://github.com/piexlmax)
+//@author: Allen
 //@function: SetSystemConfig
 //@description: 设置配置文件
 //@param: system model.System
@@ -35,7 +35,6 @@ func (systemConfigService *SystemConfigService) SetSystemConfig(system system.Sy
 	return err
 }
 
-//@author: [SliverHorn](https://github.com/SliverHorn)
 //@function: GetServerInfo
 //@description: 获取服务器信息
 //@return: server *utils.Server, err error
