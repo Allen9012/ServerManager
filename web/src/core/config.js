@@ -3,8 +3,8 @@
  */
 
 const config = {
-  appName: 'Gin-Vue-Admin',
-  appLogo: 'https://www.gin-vue-admin.com/img/logo.png',
+  appName: 'SFManager',
+  appLogo: 'https://cloudmage.oss-cn-shanghai.aliyuncs.com/img/FS_logo.jpg',
   showViteLogo: true,
   logs: [],
 }
@@ -20,11 +20,6 @@ export const viteLogo = (env) => {
     console.log(
       chalk.green(
         `> 当前版本:v2.5.9`
-      )
-    )
-    console.log(
-      chalk.green(
-        `> 加群方式:微信：shouzi_1994 QQ群：622360840`
       )
     )
     console.log(
@@ -49,7 +44,7 @@ export const viteLogo = (env) => {
     )
     console.log(
       chalk.green(
-        `> 如果项目让您获得了收益，希望您能请团队喝杯可乐:https://www.gin-vue-admin.com/coffee/index.html`
+        `> 感谢项目gva制作团队`
       )
     )
     console.log('\n')

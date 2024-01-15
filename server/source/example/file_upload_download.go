@@ -43,7 +43,7 @@ func (i *initExaFileMysql) InitializeData(ctx context.Context) (context.Context,
 		return ctx, system.ErrMissingDBContext
 	}
 	entities := []example.ExaFileUploadAndDownload{
-		{Name: "10.png", Url: "https://qmplusimg.henrongyi.top/gvalogo.png", Tag: "png", Key: "158787308910.png"},
+		{Name: "10.png", Url: "https://cloudmage.oss-cn-shanghai.aliyuncs.com/img/FS_logo.jpg", Tag: "png", Key: "158787308910.png"},
 		{Name: "logo.png", Url: "https://qmplusimg.henrongyi.top/1576554439myAvatar.png", Tag: "png", Key: "1587973709logo.png"},
 	}
 	if err := db.Create(&entities).Error; err != nil {

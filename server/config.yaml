@@ -12,7 +12,7 @@ autocode:
     server-api: /api/v1/%s
     server-plug: /plugin/%s
     server-initialize: /initialize
-    root: D:\code\full-stack\ServerManager
+    root: D:\go_code\gin-vue-admin
     web-table: /view
     web: /web/src
     server-service: /service/%s
@@ -83,7 +83,7 @@ hua-wei-obs:
     access-key: you-access-key
     secret-key: you-secret-key
 jwt:
-    signing-key: 1997e743-326c-47c7-8dc4-eee175b55047
+    signing-key: c624d0d9-6431-4626-9ebc-9dda95fd6fc2
     expires-time: 7d
     buffer-time: 1d
     issuer: qmPlus
