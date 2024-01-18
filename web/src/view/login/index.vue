@@ -4,7 +4,7 @@
     class="w-full h-full relative"
   >
     <div
-      class="rounded-lg flex items-center justify-evenly w-full h-full bg-white md:w-screen md:h-screen md:bg-[#194bfb]"
+      class="rounded-lg flex items-center justify-evenly w-full h-full bg-white md:w-screen md:h-screen md:bg-[#FDF9F2]"
     >
       <div class="md:w-3/5 w-10/12 h-full flex items-center justify-evenly">
         <div class="oblique h-[130%] w-3/5 bg-white transform -rotate-12 absolute -ml-52" />
@@ -106,28 +106,23 @@
 
     <BottomInfo class="left-0 right-0 absolute bottom-3 mx-auto  w-full z-20">
       <div class="links items-center justify-center gap-2 hidden md:flex">
-        <a
-          href="http://doc.henrongyi.top/"
-          target="_blank"
-        >
-          <img
+        <a>
+        <img
             src="@/assets/docs.png"
             class="w-8 h-8"
             alt="文档"
           >
         </a>
-        <a
-          href="https://support.qq.com/product/371961"
-          target="_blank"
-        >
+        <a>
           <img
             src="@/assets/kefu.png"
             class="w-8 h-8"
             alt="客服"
           >
         </a>
+
         <a
-          href="https://github.com/flipped-aurora/gin-vue-admin"
+          href="https://github.com/Allen9012"
           target="_blank"
         >
           <img
@@ -136,10 +131,7 @@
             alt="github"
           >
         </a>
-        <a
-          href="https://space.bilibili.com/322210472"
-          target="_blank"
-        >
+        <a>
           <img
             src="@/assets/video.png"
             class="w-8 h-8"

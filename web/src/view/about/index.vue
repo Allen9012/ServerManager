@@ -4,7 +4,7 @@
       <el-col :span="12">
         <el-card>
           <template #header>
-            <el-divider>gin-vue-admin</el-divider>
+            <el-divider>FileManager</el-divider>
           </template>
           <div>
             <el-row>
@@ -12,10 +12,10 @@
                 :span="8"
                 :offset="8"
               >
-                <a href="https://github.com/flipped-aurora/gin-vue-admin">
+                <a href="https://github.com/Allen9012">
                   <img
                     class="org-img dom-center"
-                    src="@/assets/logo.png"
+                    src="@/assets/logo copy.png"
                     alt="gin-vue-admin"
                   >
                 </a>
@@ -23,7 +23,7 @@
             </el-row>
             <el-row :gutter="10">
               <el-col :span="8">
-                <a href="https://github.com/flipped-aurora/gin-vue-admin">
+                <a href="https://github.com/Allen9012">
                   <img
                     class="dom-center"
                     src="https://img.shields.io/github/watchers/flipped-aurora/gin-vue-admin.svg?label=Watch"
@@ -32,7 +32,7 @@
                 </a>
               </el-col>
               <el-col :span="8">
-                <a href="https://github.com/flipped-aurora/gin-vue-admin">
+                <a href="https://github.com/Allen9012">
                   <img
                     class="dom-center"
                     src="https://img.shields.io/github/stars/flipped-aurora/gin-vue-admin.svg?style=social"
@@ -41,7 +41,7 @@
                 </a>
               </el-col>
               <el-col :span="8">
-                <a href="https://github.com/flipped-aurora/gin-vue-admin">
+                <a href="https://github.com/Allen9012">
                   <img
                     class="dom-center"
                     src="https://img.shields.io/github/forks/flipped-aurora/gin-vue-admin.svg?label=Fork"
@@ -54,7 +54,7 @@
         </el-card>
         <el-card style="margin-top: 20px">
           <template #header>
-            <div>flipped-aurora团队</div>
+            <div>Allen9012</div>
           </template>
           <div>
             <el-row>
@@ -65,7 +65,7 @@
                 <a href="https://github.com/flipped-aurora">
                   <img
                     class="org-img dom-center"
-                    src="@/assets/flipped-aurora.png"
+                    src="@/assets/logo copy.png"
                     alt="flipped-aurora"
                   >
                 </a>
