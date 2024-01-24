@@ -39,7 +39,7 @@
 import { FormInstance, FormRules } from 'element-plus';
 import { CompressExtention, CompressType } from '@/enums/files';
 import { computed, reactive, ref } from 'vue';
-import { DownloadFile } from '@/api/modules/files';
+import { DownloadFile } from '@/api/files';
 import { File } from '@/api/interface/file';
 import { Rules } from '@/global/form-rules';
 import DrawerHeader from '@/components/drawer-header/index.vue';

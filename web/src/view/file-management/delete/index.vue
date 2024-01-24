@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
     <el-dialog v-model="open" :title="$t('app.delete')" width="30%" :close-on-click-modal="false">
         <div>
             <el-row>
@@ -55,7 +55,7 @@ import i18n from '@/lang';
 import { ref } from 'vue';
 import { File } from '@/api/interface/file';
 import { getIcon } from '@/utils/util';
-import { DeleteFile, GetRecycleStatus } from '@/api/modules/files';
+import { DeleteFile, GetRecycleStatus } from '@/api/files';
 import { MsgSuccess } from '@/utils/message';
 
 const open = ref(false);
@@ -125,4 +125,4 @@ defineExpose({
     line-height: 20px;
     word-wrap: break-word;
 }
-</style>
+</style> -->

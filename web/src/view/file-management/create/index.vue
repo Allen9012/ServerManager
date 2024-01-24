@@ -62,7 +62,7 @@ import DrawerHeader from '@/components/drawer-header/index.vue';
 import { ref, reactive, computed } from 'vue';
 import { File } from '@/api/interface/file';
 import { FormInstance, FormRules } from 'element-plus';
-import { CreateFile } from '@/api/modules/files';
+import { CreateFile } from '@/api/files';
 import i18n from '@/lang';
 import FileRole from '@/components/file-role/index.vue';
 import { Rules } from '@/global/form-rules';

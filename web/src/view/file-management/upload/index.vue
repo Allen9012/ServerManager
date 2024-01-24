@@ -89,7 +89,7 @@
 <script setup lang="ts">
 import { nextTick, reactive, ref } from 'vue';
 import { UploadFile, UploadFiles, UploadInstance, UploadProps, UploadRawFile } from 'element-plus';
-import { ChunkUploadFileData, UploadFileData } from '@/api/modules/files';
+import { ChunkUploadFileData, UploadFileData } from '@/api/files';
 import i18n from '@/lang';
 import DrawerHeader from '@/components/drawer-header/index.vue';
 import { MsgError, MsgSuccess } from '@/utils/message';

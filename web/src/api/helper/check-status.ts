@@ -1,5 +1,5 @@
 import i18n from '@/lang';
-import router from '@/routers';
+import router from '@/router';
 import { MsgError } from '@/utils/message';
 import { GlobalStore } from '@/store';
 const globalStore = GlobalStore();
