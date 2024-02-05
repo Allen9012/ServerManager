@@ -128,9 +128,9 @@ export function computeSize(size: number): string {
 //     return { size: formattedNumber((size / Number(Math.pow(num, 4))).toFixed(2)), unit: 'TB' };
 // }
 
-// export function formattedNumber(num: string) {
-//     return num.endsWith('.00') ? Number(num.slice(0, -3)) : Number(num);
-// }
+export function formattedNumber(num: string) {
+    return num.endsWith('.00') ? Number(num.slice(0, -3)) : Number(num);
+}
 
 // export function computeSizeFromMB(size: number): string {
 //     const num = 1024.0;

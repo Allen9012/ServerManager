@@ -7,7 +7,7 @@ export default function fullImportPlugin() {
       config = conf
     },
     transform(code, id) {
-      const sourcePath = path.join(config.root, 'src/main.js').split(path.sep).join('/')
+      const sourcePath = path.join(config.root, 'src/main.ts').split(path.sep).join('/')
       const targetPath = id.split(path.sep).join('/')
       if (sourcePath === targetPath) {
         const name = 'ElementPlus'

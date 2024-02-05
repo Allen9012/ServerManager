@@ -14,7 +14,9 @@ import auth from '@/directive/auth'
 import { store } from '@/pinia'
 import App from './App.vue'
 import { initDom } from './utils/positionToCode'
-
+import SvgIcon from './components/svg-icon/svg-icon.vue';
+import Components from '@/components';
+import * as Icons from '@element-plus/icons-vue';
 initDom()
 /**
  * @description 导入加载进度条，防止首屏加载时间过长，用户等待
@@ -22,6 +24,8 @@ initDom()
  * */
 import Nprogress from 'nprogress'
 import 'nprogress/nprogress.css'
+
+import i18n from '@/lang/index';
 Nprogress.configure({ showSpinner: false, ease: 'ease', speed: 500 })
 Nprogress.start()
 
@@ -30,13 +34,18 @@ Nprogress.start()
  * */
 
 const app = createApp(App)
-app.config.productionTip = false
-
+// app.config.productionTip = false
+app.component('SvgIcon', SvgIcon);
+Object.keys(Icons).forEach((key) => {
+  app.component(key, Icons[key as keyof typeof Icons]);
+});
 app
   .use(run)
   .use(store)
   .use(auth)
   .use(router)
+  .use(i18n)
+  .use(Components)
   .mount('#app')
 
 export default app

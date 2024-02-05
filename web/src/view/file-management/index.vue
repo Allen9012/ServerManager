@@ -71,7 +71,7 @@
                         </el-dropdown>
                         <el-button-group>
                             <el-button plain @click="openUpload">{{ $t('file.upload') }}</el-button>
-                            <el-button plain @click="openWget">{{ $t('file.remoteFile') }}</el-button>
+                            <el-button plain @click="openWget">{{ $t('file.remoteFile') }}</el-button> 
                             <el-button plain @click="openMove('copy')" :disabled="selects.length === 0">
                                 {{ $t('file.copy') }}
                             </el-button>
@@ -277,7 +277,7 @@
             <ChangeRole ref="roleRef" @close="search" />
             <Compress ref="compressRef" @close="search" />
             <Decompress ref="deCompressRef" @close="search" />
-            <CodeEditor ref="codeEditorRef" @close="search" />
+            <!-- <CodeEditor ref="codeEditorRef" @close="search" /> -->
             <!-- <FileRename ref="renameRef" @close="search" /> -->
             <Upload ref="uploadRef" @close="search" />
             <!-- <Wget ref="wgetRef" @close="closeWget" /> -->
