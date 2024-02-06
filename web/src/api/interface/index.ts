@@ -19,3 +19,9 @@ export interface ResPage<T> {
     items: T[];
     total: number;
 }
+
+
+export interface ReqPage {
+    page: number;
+    pageSize: number;
+}

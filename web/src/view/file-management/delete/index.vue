@@ -1,4 +1,4 @@
-<!-- <template>
+<template>
     <el-dialog v-model="open" :title="$t('app.delete')" width="30%" :close-on-click-modal="false">
         <div>
             <el-row>
@@ -125,4 +125,4 @@ defineExpose({
     line-height: 20px;
     word-wrap: break-word;
 }
-</style> -->
+</style>
