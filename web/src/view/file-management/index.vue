@@ -1,5 +1,6 @@
 <template>
     <div>
+    
         <div class="flex items-center">
             <div class="flex-shrink-0 flex items-center mr-4">
                 <el-button :icon="Back" @click="back" circle :disabled="paths.length == 0" />
@@ -49,7 +50,7 @@
                 </el-alert>
             </template>
             <template #toolbar>
-                <div class="btn-container">
+             <div class="btn-container">
                     <div class="left-section">
                         <el-dropdown @command="handleCreate">
                             <el-button type="primary">
@@ -69,10 +70,11 @@
                                 </el-dropdown-menu>
                             </template>
                         </el-dropdown>
+
                         <el-button-group>
                             <el-button plain @click="openUpload">{{ $t('file.upload') }}</el-button>
-                            <el-button plain @click="openWget">{{ $t('file.remoteFile') }}</el-button>
-                            <el-button plain @click="openMove('copy')" :disabled="selects.length === 0">
+                            <!-- <el-button plain @click="openWget">{{ $t('file.remoteFile') }}</el-button> -->
+                            <!-- <el-button plain @click="openMove('copy')" :disabled="selects.length === 0">
                                 {{ $t('file.copy') }}
                             </el-button>
                             <el-button plain @click="openMove('cut')" :disabled="selects.length === 0">
@@ -86,12 +88,12 @@
                             </el-button>
                             <el-button plain @click="batchDelFiles" :disabled="selects.length === 0">
                                 {{ $t('commons.button.delete') }}
-                            </el-button>
+                            </el-button> -->
                         </el-button-group>
 
-                        <el-button class="btn" @click="toTerminal">
+                        <!-- <el-button class="btn" @click="toTerminal">
                             {{ $t('menu.terminal') }}
-                        </el-button>
+                        </el-button> -->
 
                         <el-button-group class="copy-button" v-if="moveOpen">
                             <el-tooltip class="box-item" effect="dark" :content="$t('file.paste')" placement="bottom">
@@ -108,65 +110,30 @@
                     </div>
 
                     <div class="right-section">
-                        <!-- <el-popover placement="bottom" :width="200" trigger="hover" @before-enter="getFavoriates">
-                            <template #reference>
-                                <el-button @click="openFavorite">
-                                    {{ $t('file.favorite') }}
-                                </el-button>
-                            </template>
-                            <div class="favorite-item">
-                                <el-table :data="favorites">
-                                    <el-table-column prop="name">
-                                        <template #default="{ row }">
-                                            <span
-                                                class="table-link text-ellipsis"
-                                                @click="toFavorite(row)"
-                                                type="primary"
-                                            >
-                                                <svg-icon
-                                                    v-if="row.isDir"
-                                                    className="table-icon"
-                                                    iconName="p-file-folder"
-                                                ></svg-icon>
-                                                <svg-icon
-                                                    v-else
-                                                    className="table-icon"
-                                                    iconName="p-file-normal"
-                                                ></svg-icon>
-                                                {{ row.name }}
-                                            </span>
-                                        </template>
-                                    </el-table-column>
-                                </el-table>
-                            </div>
-                        </el-popover> -->
-
-                        <!-- <el-button class="btn" @click="openRecycleBin">
-                            {{ $t('file.recycleBin') }}
-                        </el-button> -->
                         <div class="search-button">
-                            <el-input
+                            <!-- <el-input
                                 v-model="req.search"
                                 clearable
                                 @clear="search()"
                                 @keydown.enter="search()"
                                 :placeholder="$t('file.search')"
-                            >
-                                <template #prepend>
+                            > -->
+                                <!-- <template #prepend>
                                     <el-checkbox v-model="req.containSub">
                                         {{ $t('file.sub') }}
                                     </el-checkbox>
-                                </template>
-                                <template #append>
+                                </template> -->
+                                <!-- <template #append>
                                     <el-button icon="Search" @click="search" round />
-                                </template>
-                            </el-input>
+                                </template> -->
+                            <!-- </el-input> -->
                         </div>
                     </div>
                 </div>
             </template>
             <template #main>
-                <ComplexTable
+                <!-- <ComplexTable -->
+                <el-table
                     :pagination-config="paginationConfig"
                     v-model:selects="selects"
                     ref="tableRef"
@@ -174,7 +141,7 @@
                     @search="search"
                     @sort-change="changeSort"
                 >
-                    <el-table-column type="selection" width="30" />
+                   <el-table-column type="selection" width="30" /> 
                     <el-table-column
                         :label="$t('commons.table.name')"
                         min-width="250"
@@ -182,7 +149,7 @@
                         show-overflow-tooltip
                         sortable
                         prop="name"
-                    >
+                    > 
                         <template #default="{ row, $index }">
                             <div class="file-row" @mouseenter="showFavorite($index)" @mouseleave="hideFavorite">
                                 <div>
@@ -227,7 +194,7 @@
                             <el-link :underline="false" @click="openMode(row)" type="primary">{{ row.mode }}</el-link>
                         </template>
                     </el-table-column>
-                    <el-table-column :label="$t('commons.table.user')" prop="user" show-overflow-tooltip>
+                    <!-- <el-table-column :label="$t('commons.table.user')" prop="user" show-overflow-tooltip>
                         <template #default="{ row }">
                             <el-link :underline="false" @click="openChown(row)" type="primary">
                                 {{ row.user ? row.user : '-' }} ({{ row.uid }})
@@ -240,8 +207,8 @@
                                 {{ row.group ? row.group : '-' }} ({{ row.gid }})
                             </el-link>
                         </template>
-                    </el-table-column>
-                    <!-- <el-table-column :label="$t('file.size')" prop="size" max-width="50" sortable>
+                    </el-table-column>  -->
+                     <el-table-column :label="$t('file.size')" prop="size" max-width="50" sortable>
                         <template #default="{ row, $index }">
                             <span v-if="row.isDir">
                                 <el-button type="primary" link small @click="getDirSize(row, $index)">
@@ -253,7 +220,7 @@
                             </span>
                             <span v-else>{{ getFileSize(row.size) }}</span>
                         </template>
-                    </el-table-column> -->
+                    </el-table-column>
                     <el-table-column
                         :label="$t('file.updateTime')"
                         prop="modTime"
@@ -261,7 +228,7 @@
                         :formatter="dateFormat"
                         show-overflow-tooltip
                         sortable
-                    ></el-table-column>
+                    ></el-table-column> 
                     <fu-table-operations
                         :ellipsis="mobile ? 0 : 3"
                         :buttons="buttons"
@@ -269,27 +236,21 @@
                         :min-width="mobile ? 'auto' : 200"
                         :fixed="mobile ? false : 'right'"
                         fix
-                    />
-                </ComplexTable>
-            </template>
+                    /> 
+                </el-table>
+                <!-- </ComplexTable> -->
+            </template> 
 
-            <CreateFile ref="createRef" @close="search" />
-            <ChangeRole ref="roleRef" @close="search" />
             <Compress ref="compressRef" @close="search" />
             <Decompress ref="deCompressRef" @close="search" />
-            <!-- <CodeEditor ref="codeEditorRef" @close="search" /> -->
             <FileRename ref="renameRef" @close="search" />
             <Upload ref="uploadRef" @close="search" />
             <Wget ref="wgetRef" @close="closeWget" />
             <Move ref="moveRef" @close="closeMovePage" />
             <Download ref="downloadRef" @close="search" />
             <Process :open="processPage.open" @close="closeProcess" />
-            <!-- <Owner ref="chownRef" @close="search"></Owner> -->
             <Detail ref="detailRef" />
-            <DeleteFile ref="deleteRef" @close="search" />
-            <!-- <RecycleBin ref="recycleBinRef" @close="search" /> -->
-            <!-- <Favorite ref="favoriteRef" @close="search" /> -->
-            <!-- <BatchRole ref="batchRoleRef" @close="search" /> -->
+            <DeleteFile ref="deleteRef" @close="search" /> 
         </LayoutContent>
     </div>
 </template>
@@ -308,7 +269,7 @@ import { computeSize, copyText, dateFormat, downloadFile, getIcon, getRandomStr 
 import { StarFilled, Star } from '@element-plus/icons-vue';
 import { File } from '@/api/interface/file';
 import { Mimetypes, Languages } from '@/global/mimetype';
-import { useRouter } from 'vue-router';
+import router from '@/router/index'
 import { Back, Refresh } from '@element-plus/icons-vue';
 import { MsgWarning } from '@/utils/message';
 import { useSearchable } from './hooks/searchable';
@@ -330,8 +291,8 @@ import Download from './download/index.vue';
 import DeleteFile from './delete/index.vue';
 import Process from './process/index.vue';
 import Detail from './detail/index.vue';
-import RecycleBin from './recycle-bin/index.vue';
-import Favorite from './favorite/index.vue';
+// import RecycleBin from './recycle-bin/index.vue';
+// import Favorite from './favorite/index.vue';
 // import BatchRole from './batch-role/index.vue';
 
 const globalStore = GlobalStore();
@@ -341,7 +302,6 @@ interface FilePaths {
     name: string;
 }
 
-const router = useRouter();
 const data = ref();
 const tableRef = ref();
 let selects = ref<any>([]);

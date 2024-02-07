@@ -3,6 +3,12 @@ import 'element-plus/es/components/loading/style/css'
 import 'element-plus/es/components/notification/style/css'
 import 'element-plus/es/components/message-box/style/css'
 import './style/element_visiable.scss'
+
+import '@/styles/index.scss';
+import '@/styles/common.scss';
+import '@/assets/iconfont/iconfont.css';
+import '@/assets/iconfont/iconfont.js';
+import '@/styles/style.css';
 import { createApp } from 'vue'
 // 引入gin-vue-admin前端初始化相关内容
 import './core/gin-vue-admin'
@@ -25,15 +31,17 @@ initDom()
      * */
 import Nprogress from 'nprogress'
 import 'nprogress/nprogress.css'
+import ElementPlus from 'element-plus';
 Nprogress.configure({ showSpinner: false, ease: 'ease', speed: 500 })
 Nprogress.start()
-
 /**
  * 无需在这块结束，会在路由中间件中结束此块内容
  * */
 const app = createApp(App)
-app.config.productionTip = false
+// app.config.productionTip = false
+
 app.component('SvgIcon', SvgIcon);
+app.use(ElementPlus)
 
 app
     .use(run)
