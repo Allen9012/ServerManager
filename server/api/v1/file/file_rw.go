@@ -29,11 +29,11 @@ func (Frw *FileRWApi) ListFiles(c *gin.Context) {
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
-
-	if err := FRWService.GetFileList(&req); err != nil {
-		global.GVA_LOG.Error("创建失败!", zap.Error(err))
-		response.FailWithMessage("创建失败", c)
+	files, err := FRWService.GetFileList(req)
+	if err != nil {
+		global.GVA_LOG.Error("ListFiles fail", zap.Error(err))
+		response.FailWithMessage("ErrInternalServer", c)
 	} else {
-		response.OkWithMessage("创建成功", c)
+		response.OkWithData(files, c)
 	}
 }
