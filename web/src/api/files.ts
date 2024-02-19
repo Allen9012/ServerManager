@@ -69,13 +69,13 @@ export const ChangeFileMode = (form: File.FileCreate) => {
     //   }) 
 };
 
-// export const CompressFile = (form: File.FileCompress) => {
-//     return http.post<File.File>('files/compress', form, TimeoutEnum.T_10M);
-// };
+export const CompressFile = (form: File.FileCompress) => {
+    return http.post<File.File>('files/compress', form, TimeoutEnum.T_10M);
+};
 
-// export const DeCompressFile = (form: File.FileDeCompress) => {
-//     return http.post<File.File>('files/decompress', form, TimeoutEnum.T_10M);
-// };
+export const DeCompressFile = (form: File.FileDeCompress) => {
+    return http.post<File.File>('files/decompress', form, TimeoutEnum.T_10M);
+};
 
 export const GetFileContent = (params: File.ReqFile) => {
     return http.post<File.File>('files/content', params);
@@ -117,21 +117,21 @@ export const ChunkUploadFileData = (params: FormData, config: AxiosRequestConfig
     return http.upload<File.File>('files/chunkupload', params, config);
 };
 
-// export const RenameRile = (params: File.FileRename) => {
-//     return http.post<File.File>('files/rename', params);
-// };
+export const RenameRile = (params: File.FileRename) => {
+    return http.post<File.File>('files/rename', params);
+};
 
-// export const ChangeOwner = (params: File.FileOwner) => {
-//     return http.post<File.File>('files/owner', params);
-// };
+export const ChangeOwner = (params: File.FileOwner) => {
+    return http.post<File.File>('files/owner', params);
+};
 
-// export const WgetFile = (params: File.FileWget) => {
-//     return http.post<File.FileWgetRes>('files/wget', params);
-// };
+export const WgetFile = (params: File.FileWget) => {
+    return http.post<File.FileWgetRes>('files/wget', params);
+};
 
-// export const MoveFile = (params: File.FileMove) => {
-//     return http.post<File.File>('files/move', params);
-// };
+export const MoveFile = (params: File.FileMove) => {
+    return http.post<File.File>('files/move', params);
+};
 
 export const DownloadFile = (params: File.FileDownload) => {
     return http.download<BlobPart>('files/download', params, { responseType: 'blob', timeout: TimeoutEnum.T_40S });
@@ -165,34 +165,38 @@ export const FileKeys = () => {
 //     return http.post<ResPage<File.RecycleBin>>('files/recycle/search', params);
 // };
 
-// export const reduceFile = (params: File.RecycleBinReduce) => {
-//     return http.post<any>('files/recycle/reduce', params);
-// };
+export const reduceFile = (params: File.RecycleBinReduce) => {
+    return http.post<any>('files/recycle/reduce', params);
+};
 
-// export const clearRecycle = () => {
-//     return http.post<any>('files/recycle/clear');
-// };
+export const clearRecycle = () => {
+    return http.post<any>('files/recycle/clear');
+};
 
 // export const SearchFavorite = (params: ReqPage) => {
 //     return http.post<ResPage<File.Favorite>>('files/favorite/search', params);
 // };
 
-// export const AddFavorite = (path: string) => {
-//     return http.post<any>('files/favorite', { path: path });
-// };
+export const AddFavorite = (path: string) => {
+    return http.post<any>('files/favorite', { path: path });
+};
 
-// export const ReadByLine = (req: File.FileReadByLine) => {
-//     return http.post<any>('files/read', req);
-// };
+export const ReadByLine = (req: File.FileReadByLine) => {
+    return http.post<any>('files/read', req);
+};
 
-// export const RemoveFavorite = (id: number) => {
-//     return http.post<any>('files/favorite/del', { id: id });
-// };
+export const RemoveFavorite = (id: number) => {
+    return http.post<any>('files/favorite/del', { id: id });
+};
 
-// export const BatchChangeRole = (params: File.FileRole) => {
-//     return http.post<any>('files/batch/role', params);
-// };
+export const BatchChangeRole = (params: File.FileRole) => {
+    return http.post<any>('files/batch/role', params);
+};
 
-// export const GetRecycleStatus = () => {
-//     return http.get<string>('files/recycle/status');
-// };
+export const GetRecycleStatus = () => {
+    return http.get<string>('files/recycle/status');
+};
+
+export const SearchFavorite = (params: ReqPage) => {
+    return http.post<ResPage<File.Favorite>>('files/favorite/search', params);
+};
