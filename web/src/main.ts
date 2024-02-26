@@ -22,7 +22,7 @@ import App from './App.vue'
 import { initDom } from './utils/positionToCode'
 import SvgIcon from './components/svg-icon/svg-icon.vue';
 import Components from '@/components';
-
+import Fit2CloudPlus from 'fit2cloud-ui-plus';
 import i18n from '@/lang/index';
 initDom()
     /**
@@ -42,6 +42,7 @@ const app = createApp(App)
 
 app.component('SvgIcon', SvgIcon);
 app.use(ElementPlus)
+app.use(Fit2CloudPlus, { locale: i18n.global.messages.value[localStorage.getItem('lang') || 'zh'] });
 
 app
     .use(run)

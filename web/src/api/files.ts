@@ -1,6 +1,6 @@
 import { File } from '@/api/interface/file';
 import { AxiosRequestConfig } from 'axios';
-import { ResPage } from './interface';
+import { ResPage,ReqPage } from './interface';
 import { TimeoutEnum } from '@/enums/http-enum';
 // import { ReqPage } from '@/api/interface';
 // import service from '@/utils/request'

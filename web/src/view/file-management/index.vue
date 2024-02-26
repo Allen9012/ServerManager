@@ -132,8 +132,7 @@
                 </div>
             </template>
             <template #main>
-                <!-- <ComplexTable -->
-                <el-table
+                <ComplexTable    
                     :pagination-config="paginationConfig"
                     v-model:selects="selects"
                     ref="tableRef"
@@ -237,19 +236,18 @@
                         :fixed="mobile ? false : 'right'"
                         fix
                     /> 
-                </el-table>
-                <!-- </ComplexTable> -->
+                </ComplexTable>
             </template> 
 
-            <Compress ref="compressRef" @close="search" />
-            <Decompress ref="deCompressRef" @close="search" />
+            <!-- <Compress ref="compressRef" @close="search" /> -->
+            <!-- <Decompress ref="deCompressRef" @close="search" /> -->
             <FileRename ref="renameRef" @close="search" />
             <Upload ref="uploadRef" @close="search" />
-            <Wget ref="wgetRef" @close="closeWget" />
+            <!-- <Wget ref="wgetRef" @close="closeWget" /> -->
             <Move ref="moveRef" @close="closeMovePage" />
             <Download ref="downloadRef" @close="search" />
             <Process :open="processPage.open" @close="closeProcess" />
-            <Detail ref="detailRef" />
+            <!-- <Detail ref="detailRef" /> -->
             <DeleteFile ref="deleteRef" @close="search" /> 
         </LayoutContent>
     </div>
@@ -275,7 +273,7 @@ import { MsgWarning } from '@/utils/message';
 import { useSearchable } from './hooks/searchable';
 import { ResultData } from '@/api/interface';
 import { GlobalStore } from '@/store';
-
+import {ElMessageBox } from 'element-plus'
 import i18n from '@/lang';
 import CreateFile from './create/index.vue';
 import ChangeRole from './change-role/index.vue';
