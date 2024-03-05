@@ -21,7 +21,8 @@ type FileRWApi struct {
 
 var FRWService = service.ServiceGroupApp.FileServiceGroup.FileRWService
 
-// ListFiles @Tags File
+// ListFiles
+// @Tags File
 // @Summary List files
 // @Description 获取文件列表
 // @Accept json
@@ -45,6 +46,7 @@ func (Frw *FileRWApi) ListFiles(c *gin.Context) {
 	response.OkWithData(files, c)
 }
 
+// CreateFile
 // @Tags File
 // @Summary Create file
 // @Description 创建文件/文件夹
@@ -70,6 +72,7 @@ func (Frw *FileRWApi) CreateFile(c *gin.Context) {
 	response.OkWithData(nil, c)
 }
 
+// DeleteFile
 // @Tags File
 // @Summary Delete file
 // @Description 删除文件/文件夹
@@ -79,20 +82,20 @@ func (Frw *FileRWApi) CreateFile(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Router /files/del [post]
 // @x-panel-log {"bodyKeys":["path"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"删除文件/文件夹 [path]","formatEN":"Delete dir or file [path]"}
-// func (Frw *FileRWApi) DeleteFile(c *gin.Context) {
-// var req request.FileDelete
-// if err := helper.CheckBindAndValidate(&req, c); err != nil {
-// 	return
-// }
-// err := fileService.Delete(req)
-// if err != nil {
-// 	helper.ErrorWithDetail(c, constant.CodeErrInternalServer, constant.ErrTypeInternalServer, err)
-// 	return
-// }
-// helper.SuccessWithData(c, nil)
-// }
+//func (Frw *FileRWApi) DeleteFile(c *gin.Context) {
+//var req request.FileDelete
+//if err := helper.CheckBindAndValidate(&req, c); err != nil {
+//	return
+//}
+//err := fileService.Delete(req)
+//if err != nil {
+//	helper.ErrorWithDetail(c, constant.CodeErrInternalServer, constant.ErrTypeInternalServer, err)
+//	return
+//}
+//helper.SuccessWithData(c, nil)
+//}
 
-// TODO modify logic
+// UploadFiles
 // @Tags File
 // @Summary Upload file
 // @Description 上传文件
@@ -101,6 +104,7 @@ func (Frw *FileRWApi) CreateFile(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Router /files/upload [post]
 // @x-panel-log {"bodyKeys":["path"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"上传文件 [path]","formatEN":"Upload file [path]"}
+// TODO modify logic
 func (Frw *FileRWApi) UploadFiles(c *gin.Context) {
 	form, err := c.MultipartForm()
 	if err != nil {
@@ -141,6 +145,7 @@ func (Frw *FileRWApi) UploadFiles(c *gin.Context) {
 	}
 }
 
+// CheckFile
 // @Tags File
 // @Summary Check file exist
 // @Description 检测文件是否存在

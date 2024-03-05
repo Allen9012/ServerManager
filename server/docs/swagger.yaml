@@ -412,7 +412,7 @@ definitions:
           $ref: '#/definitions/config.SpecializedDB'
         type: array
       email:
-        $ref: '#/definitions/github_com_flipped-aurora_gin-vue-admin_server_config.Email'
+        $ref: '#/definitions/github_com_Allen9012_ServerManager_server_config.Email'
       excel:
         $ref: '#/definitions/config.Excel'
       hua-wei-obs:
@@ -705,7 +705,75 @@ definitions:
         description: 文件地址
         type: string
     type: object
-  github_com_flipped-aurora_gin-vue-admin_server_config.Email:
+  file.FileInfo:
+    properties:
+      content:
+        type: string
+      extension:
+        type: string
+      favoriteID:
+        type: integer
+      gid:
+        type: string
+      group:
+        type: string
+      isDir:
+        type: boolean
+      isHidden:
+        type: boolean
+      isSymlink:
+        type: boolean
+      itemTotal:
+        type: integer
+      items:
+        items:
+          $ref: '#/definitions/file.FileInfo'
+        type: array
+      linkPath:
+        type: string
+      mimeType:
+        type: string
+      modTime:
+        type: string
+      mode:
+        type: string
+      name:
+        type: string
+      path:
+        type: string
+      size:
+        type: integer
+      type:
+        type: string
+      uid:
+        type: string
+      updateTime:
+        type: string
+      user:
+        type: string
+    type: object
+  file.FilePermission:
+    properties:
+      ID:
+        description: 主键ID
+        type: integer
+      createdAt:
+        description: 创建时间
+        type: string
+      permissionState:
+        description: 权限状态 rw
+        type: integer
+      regexp:
+        description: 正则
+        type: string
+      updatedAt:
+        description: 更新时间
+        type: string
+      userId:
+        description: 用户id关联
+        type: integer
+    type: object
+  github_com_Allen9012_ServerManager_server_config.Email:
     properties:
       from:
         description: 发件人  你自己要发邮件的邮箱
@@ -768,6 +836,58 @@ definitions:
         type: string
     type: object
   request.Empty:
+    type: object
+  request.FileCreate:
+    properties:
+      content:
+        type: string
+      isDir:
+        type: boolean
+      isLink:
+        type: boolean
+      isSymlink:
+        type: boolean
+      linkPath:
+        type: string
+      mode:
+        type: integer
+      path:
+        type: string
+      sub:
+        type: boolean
+    required:
+    - mode
+    - path
+    type: object
+  request.FileOption:
+    properties:
+      containSub:
+        type: boolean
+      dir:
+        type: boolean
+      expand:
+        type: boolean
+      page:
+        type: integer
+      pageSize:
+        type: integer
+      path:
+        type: string
+      search:
+        type: string
+      showHidden:
+        type: boolean
+      sortBy:
+        type: string
+      sortOrder:
+        type: string
+    type: object
+  request.FilePathCheck:
+    properties:
+      path:
+        type: string
+    required:
+    - path
     type: object
   request.GetAuthorityId:
     properties:
@@ -979,6 +1099,53 @@ definitions:
     properties:
       file:
         $ref: '#/definitions/example.ExaFileUploadAndDownload'
+    type: object
+  response.FileInfo:
+    properties:
+      content:
+        type: string
+      extension:
+        type: string
+      favoriteID:
+        type: integer
+      gid:
+        type: string
+      group:
+        type: string
+      isDir:
+        type: boolean
+      isHidden:
+        type: boolean
+      isSymlink:
+        type: boolean
+      itemTotal:
+        type: integer
+      items:
+        items:
+          $ref: '#/definitions/file.FileInfo'
+        type: array
+      linkPath:
+        type: string
+      mimeType:
+        type: string
+      modTime:
+        type: string
+      mode:
+        type: string
+      name:
+        type: string
+      path:
+        type: string
+      size:
+        type: integer
+      type:
+        type: string
+      uid:
+        type: string
+      updateTime:
+        type: string
+      user:
+        type: string
     type: object
   response.FilePathResponse:
     properties:
@@ -1425,6 +1592,30 @@ definitions:
         description: 字典值
         type: integer
     type: object
+  system.SysExportTemplate:
+    properties:
+      ID:
+        description: 主键ID
+        type: integer
+      createdAt:
+        description: 创建时间
+        type: string
+      name:
+        description: 模板名称
+        type: string
+      tableName:
+        description: 表名称
+        type: string
+      templateID:
+        description: 模板标识
+        type: string
+      templateInfo:
+        description: 模板信息
+        type: string
+      updatedAt:
+        description: 更新时间
+        type: string
+    type: object
   system.SysMenu:
     properties:
       ID:
@@ -1587,6 +1778,174 @@ info:
   title: Gin-Vue-Admin Swagger API接口文档
   version: v2.5.9
 paths:
+  /FP/createFilePermission:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 创建描述文件权限的信息
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/file.FilePermission'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"创建成功"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 创建描述文件权限的信息
+      tags:
+      - FilePermission
+  /FP/deleteFilePermission:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: 删除描述文件权限的信息
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/file.FilePermission'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"删除成功"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 删除描述文件权限的信息
+      tags:
+      - FilePermission
+  /FP/deleteFilePermissionByIds:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: 批量删除描述文件权限的信息
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/request.IdsReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"批量删除成功"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 批量删除描述文件权限的信息
+      tags:
+      - FilePermission
+  /FP/findFilePermission:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 主键ID
+        in: query
+        name: ID
+        type: integer
+      - description: 创建时间
+        in: query
+        name: createdAt
+        type: string
+      - description: 权限状态 rw
+        in: query
+        name: permissionState
+        type: integer
+      - description: 正则
+        in: query
+        name: regexp
+        type: string
+      - description: 更新时间
+        in: query
+        name: updatedAt
+        type: string
+      - description: 用户id关联
+        in: query
+        name: userId
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"查询成功"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 用id查询描述文件权限的信息
+      tags:
+      - FilePermission
+  /FP/getFilePermissionList:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - in: query
+        name: endCreatedAt
+        type: string
+      - description: 关键字
+        in: query
+        name: keyword
+        type: string
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 每页大小
+        in: query
+        name: pageSize
+        type: integer
+      - in: query
+        name: startCreatedAt
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"获取成功"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 分页获取描述文件权限的信息列表
+      tags:
+      - FilePermission
+  /FP/updateFilePermission:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: 更新描述文件权限的信息
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/file.FilePermission'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"更新成功"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 更新描述文件权限的信息
+      tags:
+      - FilePermission
   /api/createApi:
     post:
       consumes:
@@ -2955,6 +3314,99 @@ paths:
       summary: 上传文件示例
       tags:
       - ExaFileUploadAndDownload
+  /files:
+    post:
+      consumes:
+      - application/json
+      description: 创建文件/文件夹
+      parameters:
+      - description: request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/request.FileCreate'
+      responses:
+        "200":
+          description: OK
+      security:
+      - ApiKeyAuth: []
+      summary: Create file
+      tags:
+      - File
+      x-panel-log:
+        BeforeFunctions: []
+        bodyKeys:
+        - path
+        formatEN: Create dir or file [path]
+        formatZH: 创建文件/文件夹 [path]
+        paramKeys: []
+  /files/check:
+    post:
+      consumes:
+      - application/json
+      description: 检测文件是否存在
+      parameters:
+      - description: request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/request.FilePathCheck'
+      responses:
+        "200":
+          description: OK
+      security:
+      - ApiKeyAuth: []
+      summary: Check file exist
+      tags:
+      - File
+  /files/search:
+    post:
+      consumes:
+      - application/json
+      description: 获取文件列表
+      parameters:
+      - description: request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/request.FileOption'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.FileInfo'
+      security:
+      - ApiKeyAuth: []
+      summary: List files
+      tags:
+      - File
+  /files/upload:
+    post:
+      description: 上传文件
+      parameters:
+      - description: request
+        in: formData
+        name: file
+        required: true
+        type: file
+      responses:
+        "200":
+          description: OK
+      security:
+      - ApiKeyAuth: []
+      summary: Upload file
+      tags:
+      - File
+      x-panel-log:
+        BeforeFunctions: []
+        bodyKeys:
+        - path
+        formatEN: Upload file [path]
+        formatZH: 上传文件 [path]
+        paramKeys: []
   /init/checkdb:
     post:
       produces:
@@ -3656,6 +4108,230 @@ paths:
       summary: 更新SysDictionaryDetail
       tags:
       - SysDictionaryDetail
+  /sysExportTemplate/createSysExportTemplate:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 创建导出模板
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/system.SysExportTemplate'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"创建成功"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 创建导出模板
+      tags:
+      - SysExportTemplate
+  /sysExportTemplate/deleteSysExportTemplate:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: 删除导出模板
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/system.SysExportTemplate'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"删除成功"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 删除导出模板
+      tags:
+      - SysExportTemplate
+  /sysExportTemplate/deleteSysExportTemplateByIds:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: 批量删除导出模板
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/request.IdsReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"批量删除成功"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 批量删除导出模板
+      tags:
+      - SysExportTemplate
+  /sysExportTemplate/exportExcel:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      summary: 导出表格模板
+      tags:
+      - SysExportTemplate
+  /sysExportTemplate/findSysExportTemplate:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 主键ID
+        in: query
+        name: ID
+        type: integer
+      - description: 创建时间
+        in: query
+        name: createdAt
+        type: string
+      - description: 模板名称
+        in: query
+        name: name
+        type: string
+      - description: 表名称
+        in: query
+        name: tableName
+        type: string
+      - description: 模板标识
+        in: query
+        name: templateID
+        type: string
+      - description: 模板信息
+        in: query
+        name: templateInfo
+        type: string
+      - description: 更新时间
+        in: query
+        name: updatedAt
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"查询成功"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 用id查询导出模板
+      tags:
+      - SysExportTemplate
+  /sysExportTemplate/getSysExportTemplateList:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 主键ID
+        in: query
+        name: ID
+        type: integer
+      - description: 创建时间
+        in: query
+        name: createdAt
+        type: string
+      - in: query
+        name: endCreatedAt
+        type: string
+      - description: 关键字
+        in: query
+        name: keyword
+        type: string
+      - description: 模板名称
+        in: query
+        name: name
+        type: string
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 每页大小
+        in: query
+        name: pageSize
+        type: integer
+      - in: query
+        name: startCreatedAt
+        type: string
+      - description: 表名称
+        in: query
+        name: tableName
+        type: string
+      - description: 模板标识
+        in: query
+        name: templateID
+        type: string
+      - description: 模板信息
+        in: query
+        name: templateInfo
+        type: string
+      - description: 更新时间
+        in: query
+        name: updatedAt
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"获取成功"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 分页获取导出模板列表
+      tags:
+      - SysExportTemplate
+  /sysExportTemplate/importExcel:
+    post:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      summary: 导入表格
+      tags:
+      - SysImportTemplate
+  /sysExportTemplate/updateSysExportTemplate:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: 更新导出模板
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/system.SysExportTemplate'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"更新成功"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 更新导出模板
+      tags:
+      - SysExportTemplate
   /sysOperationRecord/createSysOperationRecord:
     post:
       consumes:
