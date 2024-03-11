@@ -378,13 +378,17 @@ const search = async () => {
 
     req.page = paginationConfig.currentPage;
     req.pageSize = paginationConfig.pageSize;
-    await GetFilesList(req)
-        .then((res) => {
-            handleSearchResult(res);
-        })
-        .finally(() => {
-            loading.value = false;
-        });
+    try {
+    // 直接使用 await 等待 Promise 解决，并处理结果
+    const res = await GetFilesList(req);
+    handleSearchResult(res);
+  } catch (error) {
+    // 这里的 error 是 Promise 被 reject 时的原因
+    console.error('Error during GetFilesList:', error);
+  } finally {
+    // 无论成功还是失败，都会执行这里的代码
+    loading.value = false;
+  }
 };
 
 /** just search, no handleSearchResult */
