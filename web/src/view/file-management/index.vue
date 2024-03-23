@@ -74,21 +74,21 @@
                         <el-button-group>
                             <el-button plain @click="openUpload">{{ $t('file.upload') }}</el-button>
                             <!-- <el-button plain @click="openWget">{{ $t('file.remoteFile') }}</el-button> -->
-                            <!-- <el-button plain @click="openMove('copy')" :disabled="selects.length === 0">
+                            <el-button plain @click="openMove('copy')" :disabled="selects.length === 0">
                                 {{ $t('file.copy') }}
                             </el-button>
                             <el-button plain @click="openMove('cut')" :disabled="selects.length === 0">
                                 {{ $t('file.move') }}
                             </el-button>
-                            <el-button plain @click="openCompress(selects)" :disabled="selects.length === 0">
+                            <!-- <el-button plain @click="openCompress(selects)" :disabled="selects.length === 0">
                                 {{ $t('file.compress') }}
                             </el-button>
                             <el-button plain @click="openBatchRole(selects)" :disabled="selects.length === 0">
                                 {{ $t('file.role') }}
-                            </el-button>
+                            </el-button> -->
                             <el-button plain @click="batchDelFiles" :disabled="selects.length === 0">
                                 {{ $t('commons.button.delete') }}
-                            </el-button> -->
+                            </el-button>
                         </el-button-group>
 
                         <!-- <el-button class="btn" @click="toTerminal">
@@ -108,27 +108,63 @@
                             </el-tooltip>
                         </el-button-group>
                     </div>
+                    <!-- 文件搜索，格式有点问题 -->
+                    <!-- <div class="right-section">
+                        <el-popover placement="bottom" :width="200" trigger="hover" @before-enter="getFavoriates">
+                            <template #reference>
+                                <el-button @click="openFavorite">
+                                    {{ $t('file.favorite') }}
+                                </el-button>
+                            </template>
+                            <div class="favorite-item">
+                                <el-table :data="favorites">
+                                    <el-table-column prop="name">
+                                        <template #default="{ row }">
+                                            <span
+                                                class="table-link text-ellipsis"
+                                                @click="toFavorite(row)"
+                                                type="primary"
+                                            >
+                                                <svg-icon
+                                                    v-if="row.isDir"
+                                                    className="table-icon"
+                                                    iconName="p-file-folder"
+                                                ></svg-icon>
+                                                <svg-icon
+                                                    v-else
+                                                    className="table-icon"
+                                                    iconName="p-file-normal"
+                                                ></svg-icon>
+                                                {{ row.name }}
+                                            </span>
+                                        </template>
+                                    </el-table-column>
+                                </el-table>
+                            </div>
+                        </el-popover>
 
-                    <div class="right-section">
+                        <el-button class="btn" @click="openRecycleBin">
+                            {{ $t('file.recycleBin') }}
+                        </el-button>
                         <div class="search-button">
-                            <!-- <el-input
+                            <el-input
                                 v-model="req.search"
                                 clearable
                                 @clear="search()"
                                 @keydown.enter="search()"
                                 :placeholder="$t('file.search')"
-                            > -->
-                                <!-- <template #prepend>
+                            >
+                                <template #prepend>
                                     <el-checkbox v-model="req.containSub">
                                         {{ $t('file.sub') }}
                                     </el-checkbox>
-                                </template> -->
-                                <!-- <template #append>
+                                </template>
+                                <template #append>
                                     <el-button icon="Search" @click="search" round />
-                                </template> -->
-                            <!-- </el-input> -->
+                                </template>
+                            </el-input>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </template>
             <template #main>
@@ -167,7 +203,8 @@
                                     <span class="table-link" @click="open(row)" type="primary">{{ row.name }}</span>
                                     <span v-if="row.isSymlink">-> {{ row.linkPath }}</span>
                                 </div>
-                                <div>
+                                <!-- 收藏文件 -->
+                                <!-- <div>
                                     <el-button
                                         v-if="row.favoriteID > 0"
                                         link
@@ -184,16 +221,18 @@
                                             @click="addFavorite(row)"
                                         ></el-button>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
                         </template>
                     </el-table-column>
-                    <el-table-column :label="$t('file.mode')" prop="mode" max-width="50">
+                    <!-- 文件权限 -->
+                    <el-table-column :label="'Linux权限'" prop="mode" max-width="50">
                         <template #default="{ row }">
                             <el-link :underline="false" @click="openMode(row)" type="primary">{{ row.mode }}</el-link>
                         </template>
                     </el-table-column>
-                    <!-- <el-table-column :label="$t('commons.table.user')" prop="user" show-overflow-tooltip>
+                    <!-- 用户组 -->
+                    <el-table-column :label="$t('commons.table.user')" prop="user" show-overflow-tooltip>
                         <template #default="{ row }">
                             <el-link :underline="false" @click="openChown(row)" type="primary">
                                 {{ row.user ? row.user : '-' }} ({{ row.uid }})
@@ -206,8 +245,9 @@
                                 {{ row.group ? row.group : '-' }} ({{ row.gid }})
                             </el-link>
                         </template>
-                    </el-table-column>  -->
-                     <el-table-column :label="$t('file.size')" prop="size" max-width="50" sortable>
+                    </el-table-column> 
+                    <!-- TODO 文件大小 -->
+                     <!-- <el-table-column :label="$t('file.size')" prop="size" max-width="50" sortable>
                         <template #default="{ row, $index }">
                             <span v-if="row.isDir">
                                 <el-button type="primary" link small @click="getDirSize(row, $index)">
@@ -219,7 +259,7 @@
                             </span>
                             <span v-else>{{ getFileSize(row.size) }}</span>
                         </template>
-                    </el-table-column>
+                    </el-table-column> -->
                     <el-table-column
                         :label="$t('file.updateTime')"
                         prop="modTime"
@@ -238,17 +278,24 @@
                     /> 
                 </ComplexTable>
             </template> 
-
-            <!-- <Compress ref="compressRef" @close="search" /> -->
-            <!-- <Decompress ref="deCompressRef" @close="search" /> -->
+            <!-- 弹出边窗口 -->
+            <CreateFile ref="createRef" @close="search" />
+            <ChangeRole ref="roleRef" @close="search" />
+            <Compress ref="compressRef" @close="search" />
+            <Decompress ref="deCompressRef" @close="search" />
+            <CodeEditor ref="codeEditorRef" @close="search" />
             <FileRename ref="renameRef" @close="search" />
             <Upload ref="uploadRef" @close="search" />
-            <!-- <Wget ref="wgetRef" @close="closeWget" /> -->
+            <Wget ref="wgetRef" @close="closeWget" />
             <Move ref="moveRef" @close="closeMovePage" />
             <Download ref="downloadRef" @close="search" />
             <Process :open="processPage.open" @close="closeProcess" />
-            <!-- <Detail ref="detailRef" /> -->
-            <DeleteFile ref="deleteRef" @close="search" /> 
+            <Owner ref="chownRef" @close="search"></Owner>
+            <Detail ref="detailRef" />
+            <DeleteFile ref="deleteRef" @close="search" />
+            <RecycleBin ref="recycleBinRef" @close="search" />
+            <Favorite ref="favoriteRef" @close="search" />
+            <BatchRole ref="batchRoleRef" @close="search" />
         </LayoutContent>
     </div>
 </template>
