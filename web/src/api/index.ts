@@ -107,26 +107,33 @@ class RequestHttp {
     }
 
     get<T>(url: string, params?: object, _object = {}): Promise<ResultData<T>> {
-        return this.service.get(url, { params, ..._object });
+        const nurl = 'api/' + url;
+        return this.service.get(nurl, { params, ..._object });
     }
     post<T>(url: string, params?: object, timeout?: number): Promise<ResultData<T>> {
-        return this.service.post(url, params, {
+        // 请求url 为/api/....
+        const nurl = 'api/' + url;
+        return this.service.post(nurl, params, {
             baseURL: process.env.VITE_BASE_PATH as string,
             timeout: timeout ? timeout : (ResultEnum.TIMEOUT as number),
             withCredentials: true,
         });
     }
     put<T>(url: string, params?: object, _object = {}): Promise<ResultData<T>> {
-        return this.service.put(url, params, _object);
+        const nurl = 'api/' + url;
+        return this.service.put(nurl, params, _object);
     }
     delete<T>(url: string, params?: any, _object = {}): Promise<ResultData<T>> {
-        return this.service.delete(url, { params, ..._object });
+        const nurl = 'api/' + url;
+        return this.service.delete(nurl, { params, ..._object });
     }
     download<BlobPart>(url: string, params?: object, _object = {}): Promise<BlobPart> {
-        return this.service.post(url, params, _object);
+        const nurl = 'api/' + url;
+        return this.service.post(nurl, params, _object);
     }
     upload<T>(url: string, params: object = {}, config?: AxiosRequestConfig): Promise<T> {
-        return this.service.post(url, params, config);
+        const nurl = 'api/' + url;
+        return this.service.post(nurl, params, config);
     }
 }
 

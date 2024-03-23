@@ -63,7 +63,7 @@ const files = ref();
 const loading = ref(false);
 const em = defineEmits(['close']);
 const forceDelete = ref(false);
-const recycleStatus = ref('enable');
+const recycleStatus = ref('disable');  // 主动设置不存在回收站功能
 
 const acceptParams = (props: File.File[]) => {
     getStatus();
