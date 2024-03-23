@@ -214,5 +214,7 @@ zap:
     max-age: 0
     show-line: true
     log-in-console: true
+# 默认mount 该目录
 volume:
-    path: /home/allen/go_code;
+    host_path: /home/allen/opt/prod;  # 宿主机目录
+    container_path: /opt/prod;         # 容器挂在目录

@@ -17,8 +17,8 @@ import (
 // @version                     v2.5.9
 // @description                 使用gin+vue进行极速开发的全栈开发基础平台
 // @securityDefinitions.apikey  ApiKeyAuth
-// @in                          header
 // @name                        x-token
+// @in                          header
 // @BasePath                    /
 func main() {
 	global.GVA_VP = core.Viper() // 初始化Viper

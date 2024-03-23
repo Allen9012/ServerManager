@@ -1,9 +1,11 @@
 package request
 
-import "github.com/Allen9012/ServerManager/server/model/file"
+import (
+	"github.com/Allen9012/ServerManager/server/utils/files"
+)
 
 type FileOption struct {
-	file.FileOption
+	files.FileOption
 }
 
 type FileContentReq struct {

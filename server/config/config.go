@@ -31,3 +31,8 @@ type Server struct {
 	Cors   CORS   `mapstructure:"cors" json:"cors" yaml:"cors"`
 	Volume Volume `mapstructure:"volume" json:"volume" yaml:"volume"`
 }
+
+type Volume struct {
+	HostPath      string `mapstructure:"host_path" json:"host_path" yaml:"host_path"`
+	ContainerPath string `mapstructure:"container_path" json:"container_path" yaml:"container_path"`
+}

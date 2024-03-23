@@ -29,11 +29,15 @@ func RunWindowsServer() {
 	if global.GVA_DB != nil {
 		system.LoadAll()
 	}
-
+	// 检查挂载目录
+	err := checkMount()
+	if err != nil {
+		zap.L().Error(fmt.Sprintf("%+v", err))
+	}
 	Router := initialize.Routers()
 	Router.Static("/form-generator", "./resource/page")
 
-	address := fmt.Sprintf(":%d", global.GVA_CONFIG.System.Addr)
+	address := fmt.Sprintf("127.0.0.1:%d", global.GVA_CONFIG.System.Addr)
 	s := initServer(address, Router)
 	// 保证文本顺序输出
 	// In order to ensure that the text order output can be deleted
@@ -42,8 +46,8 @@ func RunWindowsServer() {
 
 	fmt.Printf(`
 		欢迎使用 ServerManager
-		默认自动化文档地址:http://127.0.0.1%s/swagger/index.html
-		默认前端文件运行地址:http://127.0.0.1:8080
-	`, address)
+		默认自动化文档地址:http://127.0.0.1:%s/swagger/index.html
+		默认前端文件运行地址:http://127.0.0.1:8080%s
+	`, global.GVA_CONFIG.System.Addr, "\n")
 	global.GVA_LOG.Error(s.ListenAndServe().Error())
 }

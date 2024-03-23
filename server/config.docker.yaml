@@ -17,6 +17,11 @@ zap:
   stacktrace-key: stacktrace
   log-in-console: true
 
+# 标识挂载目录
+volume:
+  host_path: /home/allen/opt/prod;  # 宿主机目录
+  container_path: /opt/prod;         # 容器挂在目录
+
 # redis configuration
 redis:
   db: 0

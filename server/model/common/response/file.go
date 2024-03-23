@@ -1,9 +1,11 @@
 package response
 
-import "github.com/Allen9012/ServerManager/server/model/file"
+import (
+	"github.com/Allen9012/ServerManager/server/utils/files"
+)
 
 type FileInfo struct {
-	file.FileInfo
+	files.FileInfo
 }
 
 type UploadInfo struct {

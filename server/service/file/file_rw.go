@@ -3,6 +3,8 @@ package file
 import (
 	"github.com/Allen9012/ServerManager/server/model/common/request"
 	"github.com/Allen9012/ServerManager/server/model/common/response"
+	"github.com/Allen9012/ServerManager/server/utils/files"
+	"os"
 )
 
 type FileRWService struct {
@@ -53,15 +55,15 @@ func (f *FileRWService) Create(op request.FileCreate) error {
 }
 
 func (f *FileRWService) GetFileList(op request.FileOption) (response.FileInfo, error) {
-	//var fileInfo response.FileInfo
-	//if _, err := os.Stat(op.Path); err != nil && os.IsNotExist(err) {
-	//	return fileInfo, nil
-	//}
-	//info, err := file.NewFileInfo(op.FileOption)
-	//if err != nil {
-	//	return fileInfo, err
-	//}
-	//fileInfo.FileInfo = *info
-	//return fileInfo, nil
-	panic("implement me")
+	var fileInfo response.FileInfo
+	// 没有文件返回空结构体
+	if _, err := os.Stat(op.Path); err != nil && os.IsNotExist(err) {
+		return fileInfo, nil
+	}
+	info, err := files.NewFileInfo(op.FileOption)
+	if err != nil {
+		return fileInfo, err
+	}
+	fileInfo.FileInfo = *info
+	return fileInfo, nil
 }

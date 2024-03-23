@@ -10,6 +10,7 @@ require (
 	github.com/flipped-aurora/ws v1.0.2
 	github.com/fsnotify/fsnotify v1.6.0
 	github.com/fvbock/endless v0.0.0-20170109170031-447134032cb6
+	github.com/gin-contrib/i18n v0.0.1
 	github.com/gin-gonic/gin v1.9.1
 	github.com/glebarez/sqlite v1.8.0
 	github.com/go-sql-driver/mysql v1.7.1
@@ -19,6 +20,7 @@ require (
 	github.com/huaweicloud/huaweicloud-sdk-go-obs v3.21.8+incompatible
 	github.com/jordan-wright/email v0.0.0-20200824153738-3f5bafa1cd84
 	github.com/mojocn/base64Captcha v1.3.5
+	github.com/nicksnyder/go-i18n/v2 v2.4.0
 	github.com/otiai10/copy v1.7.0
 	github.com/pkg/errors v0.9.1
 	github.com/qiniu/api.v7/v7 v7.4.1
@@ -27,6 +29,7 @@ require (
 	github.com/robfig/cron/v3 v3.0.1
 	github.com/shirou/gopsutil/v3 v3.23.6
 	github.com/songzhibin97/gkit v1.2.11
+	github.com/spf13/afero v1.9.5
 	github.com/spf13/viper v1.16.0
 	github.com/stretchr/testify v1.9.0
 	github.com/swaggo/files v1.0.1
@@ -55,7 +58,6 @@ require (
 	github.com/chenzhuoyu/base64x v0.0.0-20230717121745-296ad89f973d // indirect
 	github.com/chenzhuoyu/iasm v0.9.1 // indirect
 	github.com/clbanning/mxj v1.8.4 // indirect
-	github.com/cpuguy83/go-md2man/v2 v2.0.3 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/dustin/go-humanize v1.0.1 // indirect
@@ -106,10 +108,7 @@ require (
 	github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec // indirect
 	github.com/richardlehane/mscfb v1.0.4 // indirect
 	github.com/richardlehane/msoleps v1.0.3 // indirect
-	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/shoenig/go-m1cpu v0.1.6 // indirect
-	github.com/shurcooL/sanitized_anchor_name v1.0.0 // indirect
-	github.com/spf13/afero v1.9.5 // indirect
 	github.com/spf13/cast v1.5.1 // indirect
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
@@ -118,12 +117,10 @@ require (
 	github.com/tklauser/numcpus v0.6.0 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.12 // indirect
-	github.com/urfave/cli/v2 v2.27.1 // indirect
 	github.com/xdg-go/pbkdf2 v1.0.0 // indirect
 	github.com/xdg-go/scram v1.1.2 // indirect
 	github.com/xdg-go/stringprep v1.0.4 // indirect
 	github.com/xo/terminfo v0.0.0-20210125001918-ca9a967f8778 // indirect
-	github.com/xrash/smetrics v0.0.0-20231213231151-1d8dd44e695e // indirect
 	github.com/xuri/efp v0.0.0-20230802181842-ad255f2331ca // indirect
 	github.com/xuri/nfp v0.0.0-20230819163627-dc951e3ffe1a // indirect
 	github.com/youmark/pkcs8 v0.0.0-20181117223130-1be2e3e5546d // indirect
@@ -138,12 +135,10 @@ require (
 	golang.org/x/tools v0.19.0 // indirect
 	google.golang.org/protobuf v1.32.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
-	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	gorm.io/plugin/dbresolver v1.4.1 // indirect
 	modernc.org/libc v1.24.1 // indirect
 	modernc.org/mathutil v1.5.0 // indirect
 	modernc.org/memory v1.6.0 // indirect
 	modernc.org/sqlite v1.23.0 // indirect
-	sigs.k8s.io/yaml v1.4.0 // indirect
 )
