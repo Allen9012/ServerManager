@@ -1,9 +1,13 @@
 package file
 
 import (
-	"github.com/Allen9012/ServerManager/server/model/common/request"
-	"github.com/Allen9012/ServerManager/server/model/common/response"
+	"github.com/Allen9012/ServerManager/server/global"
+	"github.com/Allen9012/ServerManager/server/model/file/request"
+	"github.com/Allen9012/ServerManager/server/model/file/response"
+	"github.com/Allen9012/ServerManager/server/utils/buserr"
+	"github.com/Allen9012/ServerManager/server/utils/constant"
 	"github.com/Allen9012/ServerManager/server/utils/files"
+	"io/fs"
 	"os"
 )
 
@@ -35,23 +39,24 @@ func (f *FileRWService) GetFileTree(op request.FileOption) ([]response.FileTree,
 }
 
 func (f *FileRWService) Create(op request.FileCreate) error {
-	//fo := file.NewFileOp()
-	//if fo.Stat(op.Path) {
-	//	return buserr.New(constant.ErrFileIsExit)
-	//}
-	//if op.IsDir {
-	//	return fo.CreateDir(op.Path, fs.FileMode(op.Mode))
-	//} else {
-	//	if op.IsLink {
-	//		if !fo.Stat(op.LinkPath) {
-	//			return buserr.New(constant.ErrLinkPathNotFound)
-	//		}
-	//		return fo.LinkFile(op.LinkPath, op.Path, op.IsSymlink)
-	//	} else {
-	//		return fo.CreateFile(op.Path)
-	//	}
-	//}
-	panic("implement me")
+	fo := files.NewFileOp()
+	if fo.Stat(op.Path) {
+		return buserr.New(constant.ErrFileIsExit)
+	}
+	if op.IsDir {
+		global.GVA_LOG.Info("2")
+		return fo.CreateDir(op.Path, fs.FileMode(op.Mode))
+	} else {
+		// 创建文件
+		if op.IsLink {
+			if !fo.Stat(op.LinkPath) {
+				return buserr.New(constant.ErrLinkPathNotFound)
+			}
+			return fo.LinkFile(op.LinkPath, op.Path, op.IsSymlink)
+		} else {
+			return fo.CreateFile(op.Path)
+		}
+	}
 }
 
 func (f *FileRWService) GetFileList(op request.FileOption) (response.FileInfo, error) {
@@ -66,4 +71,43 @@ func (f *FileRWService) GetFileList(op request.FileOption) (response.FileInfo, e
 	}
 	fileInfo.FileInfo = *info
 	return fileInfo, nil
+}
+
+func (f *FileRWService) Delete(op request.FileDelete) error {
+	fo := files.NewFileOp()
+	//recycleBinStatus, _ := settingRepo.Get(settingRepo.WithByKey("FileRecycleBin"))
+	//if recycleBinStatus.Value == "disable" {
+	op.ForceDelete = true
+	//}
+	if op.ForceDelete {
+		if op.IsDir {
+			return fo.DeleteDir(op.Path)
+		} else {
+			return fo.DeleteFile(op.Path)
+		}
+	}
+	//if err := NewIRecycleBinService().Create(request.RecycleBinCreate{SourcePath: op.Path}); err != nil {
+	//	return err
+	//}
+	//return favoriteRepo.Delete(favoriteRepo.WithByPath(op.Path))
+	return nil
+}
+
+// 批量删除
+func (f *FileRWService) BatchDelete(op request.FileBatchDelete) error {
+	fo := files.NewFileOp()
+	if op.IsDir {
+		for _, file := range op.Paths {
+			if err := fo.DeleteDir(file); err != nil {
+				return err
+			}
+		}
+	} else {
+		for _, file := range op.Paths {
+			if err := fo.DeleteFile(file); err != nil {
+				return err
+			}
+		}
+	}
+	return nil
 }

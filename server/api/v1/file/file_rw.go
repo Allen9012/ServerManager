@@ -3,13 +3,13 @@ package file
 import (
 	"errors"
 	"fmt"
+	"github.com/Allen9012/ServerManager/server/model/file/request"
 	"os"
 	"path"
 	"strings"
 
 	"github.com/Allen9012/ServerManager/server/buserr"
 	"github.com/Allen9012/ServerManager/server/global"
-	"github.com/Allen9012/ServerManager/server/model/common/request"
 	"github.com/Allen9012/ServerManager/server/model/common/response"
 	"github.com/Allen9012/ServerManager/server/service"
 	"github.com/gin-gonic/gin"
@@ -82,18 +82,42 @@ func (Frw *FileRWApi) CreateFile(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Router /files/del [post]
 // @x-panel-log {"bodyKeys":["path"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"删除文件/文件夹 [path]","formatEN":"Delete dir or file [path]"}
-//func (Frw *FileRWApi) DeleteFile(c *gin.Context) {
-//var req request.FileDelete
-//if err := helper.CheckBindAndValidate(&req, c); err != nil {
-//	return
-//}
-//err := fileService.Delete(req)
-//if err != nil {
-//	helper.ErrorWithDetail(c, constant.CodeErrInternalServer, constant.ErrTypeInternalServer, err)
-//	return
-//}
-//helper.SuccessWithData(c, nil)
-//}
+func (Frw *FileRWApi) DeleteFile(c *gin.Context) {
+	var req request.FileDelete
+	if err := c.ShouldBindJSON(&req); err != nil {
+		return
+	}
+	err := FRWService.Delete(req)
+	if err != nil {
+		global.GVA_LOG.Error("DeleteFile fail", zap.Error(err))
+		response.FailWithMessage("ErrInternalServer", c)
+		return
+	}
+	response.OkWithData(nil, c)
+}
+
+// @Tags File
+// @Summary Batch delete file
+// @Description 批量删除文件/文件夹
+// @Accept json
+// @Param request body request.FileBatchDelete true "request"
+// @Success 200
+// @Security ApiKeyAuth
+// @Router /files/batch/del [post]
+// @x-panel-log {"bodyKeys":["paths"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"批量删除文件/文件夹 [paths]","formatEN":"Batch delete dir or file [paths]"}
+func (Frw *FileRWApi) BatchDeleteFile(c *gin.Context) {
+	var req request.FileBatchDelete
+	if err := c.ShouldBindJSON(&req); err != nil {
+		return
+	}
+	err := FRWService.BatchDelete(req)
+	if err != nil {
+		global.GVA_LOG.Error("BatchDeleteFile fail", zap.Error(err))
+		response.FailWithMessage("ErrInternalServer", c)
+		return
+	}
+	response.OkWithData(nil, c)
+}
 
 // UploadFiles
 // @Tags File

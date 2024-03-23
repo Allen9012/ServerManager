@@ -5,6 +5,8 @@ import (
 	"github.com/Allen9012/ServerManager/server/global"
 )
 
+/*	存储使用	*/
+
 // 描述文件权限的信息 结构体  FilePermission
 type FilePermission struct {
 	global.GVA_MODEL
