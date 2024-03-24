@@ -83,8 +83,7 @@ func Routers() *gin.Engine {
 	}
 	{
 		fileRouter := router.RouterGroupApp.File
-		// TODO 修改成private
-		fileRouter.InitFilePermissionRouter(PublicGroup)
+		fileRouter.InitFilePermissionRouter(PrivateGroup)
 		fileRouter.InitFileRWRouter(PublicGroup)
 	}
 

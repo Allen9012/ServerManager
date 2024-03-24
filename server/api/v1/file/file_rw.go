@@ -1,13 +1,21 @@
 package file
 
 import (
+	"fmt"
 	"github.com/Allen9012/ServerManager/server/global"
 	"github.com/Allen9012/ServerManager/server/model/common/response"
 	"github.com/Allen9012/ServerManager/server/model/file/request"
 	"github.com/Allen9012/ServerManager/server/service"
+	"github.com/Allen9012/ServerManager/server/utils"
+	"github.com/Allen9012/ServerManager/server/utils/buserr"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
+	"net/http"
+	"net/url"
 	"os"
+	"path"
+	"strconv"
+	"strings"
 )
 
 type FileRWApi struct {
@@ -118,56 +126,6 @@ func (frw *FileRWApi) BatchDeleteFile(c *gin.Context) {
 	response.OkWithData(nil, c)
 }
 
-// UploadFiles
-// @Tags File
-// @Summary Upload file
-// @Description 上传文件
-// @Param file formData file true "request"
-// @Success 200
-// @Security ApiKeyAuth
-// @Router /files/upload [post]
-// @x-panel-log {"bodyKeys":["path"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"上传文件 [path]","formatEN":"Upload file [path]"}
-// TODO modify logic
-//func (Frw *FileRWApi) UploadFiles(c *gin.Context) {
-//	form, err := c.MultipartForm()
-//	if err != nil {
-//		global.GVA_LOG.Error("UploadFiles fail", zap.Error(err))
-//		response.FailWithMessage(err.Error(), c)
-//		return
-//	}
-//	files := form.File["file"]
-//	paths := form.Value["path"]
-//	if len(paths) == 0 || !strings.Contains(paths[0], "/") {
-//		global.GVA_LOG.Error("UploadFiles fail", zap.Error(err))
-//		response.FailWithMessage(errors.New("error paths in request").Error(), c)
-//		return
-//	}
-//	dir := path.Dir(paths[0])
-//	if _, err := os.Stat(dir); err != nil && os.IsNotExist(err) {
-//		if err = os.MkdirAll(dir, os.ModePerm); err != nil {
-//			global.GVA_LOG.Error("UploadFiles fail", zap.Error(err))
-//			response.FailWithMessage(errors.New("mkdir %s failed, err: %v").Error(), c)
-//			return
-//		}
-//	}
-//	success := 0
-//	failures := make(buserr.MultiErr)
-//	for _, file := range files {
-//		if err := c.SaveUploadedFile(file, path.Join(paths[0], file.Filename)); err != nil {
-//			e := fmt.Errorf("upload [%s] file failed, err: %v", file.Filename, err)
-//			failures[file.Filename] = e
-//			global.GVA_LOG.Error(e.Error())
-//			continue
-//		}
-//		success++
-//	}
-//	if success == 0 {
-//		response.FailWithMessage(failures.Error(), c)
-//	} else {
-//		response.OkWithMessage(fmt.Sprintf("%d files upload success", success), c)
-//	}
-//}
-
 // CheckFile
 // @Tags File
 // @Summary Check file exist
@@ -235,4 +193,76 @@ func (frw *FileRWApi) ChangeFileName(c *gin.Context) {
 		return
 	}
 	response.OkWithData(true, c)
+}
+
+// @Tags File
+// @Summary Download file
+// @Description 下载文件
+// @Accept json
+// @Param request body request.FileDownload true "request"
+// @Success 200
+// @Security ApiKeyAuth
+// @Router /files/download [post]
+// @x-panel-log {"bodyKeys":["name"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"下载文件 [name]","formatEN":"Download file [name]"}
+func (frw *FileRWApi) Download(c *gin.Context) {
+	filePath := c.Query("path")
+	file, err := os.Open(filePath)
+	if err != nil {
+		response.FailWithMessage("ErrTypeInvalidParams", c)
+		return
+	}
+	id := utils.GetUserAuthorityId(c)
+	if err = FRWService.CheckPermission(id); err != nil {
+		response.FailWithMessage("Err Permission Denied", c)
+		return
+	}
+	info, _ := file.Stat()
+	c.Header("Content-Length", strconv.FormatInt(info.Size(), 10))
+	c.Header("Content-Disposition", "attachment; filename*=utf-8''"+url.PathEscape(info.Name()))
+	http.ServeContent(c.Writer, c.Request, info.Name(), info.ModTime(), file)
+}
+
+// @Tags File
+// @Summary Upload file
+// @Description 上传文件
+// @Param file formData file true "request"
+// @Success 200
+// @Security ApiKeyAuth
+// @Router /files/upload [post]
+// @x-panel-log {"bodyKeys":["path"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"上传文件 [path]","formatEN":"Upload file [path]"}
+func (frw *FileRWApi) UploadFiles(c *gin.Context) {
+	form, err := c.MultipartForm()
+	if err != nil {
+		response.FailWithMessage("ErrTypeInvalidParams", c)
+		return
+	}
+	files := form.File["file"]
+	paths := form.Value["path"]
+	if len(paths) == 0 || !strings.Contains(paths[0], "/") {
+		response.FailWithDetailed(gin.H{}, "error paths in request", c)
+		return
+	}
+	dir := path.Dir(paths[0])
+	if _, err := os.Stat(dir); err != nil && os.IsNotExist(err) {
+		if err = os.MkdirAll(dir, os.ModePerm); err != nil {
+			response.FailWithDetailed(gin.H{}, fmt.Sprintf("mkdir %s failed, err: %v", dir, err), c)
+			return
+		}
+	}
+	success := 0
+	failures := make(buserr.MultiErr)
+	for _, file := range files {
+		if err := c.SaveUploadedFile(file, path.Join(paths[0], file.Filename)); err != nil {
+			e := fmt.Errorf("upload [%s] file failed, err: %v", file.Filename, err)
+			failures[file.Filename] = e
+			global.GVA_LOG.Error(fmt.Sprintf("upload [%s] file failed, err: %v", file.Filename, err))
+			continue
+		}
+		success++
+	}
+	if success == 0 {
+		response.FailWithDetailed(failures, "ErrTypeInternalServer", c)
+	} else {
+		response.OkWithMessage(fmt.Sprintf("%d files upload success", success), c)
+	}
 }

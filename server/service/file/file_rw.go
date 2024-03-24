@@ -160,3 +160,8 @@ func (f *FileRWService) ChangeName(req request.FileRename) error {
 	fo := files.NewFileOp()
 	return fo.Rename(req.OldName, req.NewName)
 }
+
+// TODO 检查是否拥有权限
+func (f *FileRWService) CheckPermission(authID uint) error {
+	panic("implement me")
+}
