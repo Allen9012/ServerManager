@@ -1,6 +1,8 @@
 package file
 
 import (
+	"errors"
+	"fmt"
 	"github.com/Allen9012/ServerManager/server/global"
 	"github.com/Allen9012/ServerManager/server/model/file/request"
 	"github.com/Allen9012/ServerManager/server/model/file/response"
@@ -9,6 +11,8 @@ import (
 	"github.com/Allen9012/ServerManager/server/utils/files"
 	"io/fs"
 	"os"
+	"path/filepath"
+	"strings"
 )
 
 type FileRWService struct {
@@ -110,4 +114,49 @@ func (f *FileRWService) BatchDelete(op request.FileBatchDelete) error {
 		}
 	}
 	return nil
+}
+
+func (f *FileRWService) MvFile(m request.FileMove) error {
+	fo := files.NewFileOp()
+	if !fo.Stat(m.NewPath) {
+		return buserr.New(constant.ErrPathNotFound)
+	}
+	for _, oldPath := range m.OldPaths {
+		// 找不到源文件
+		if !fo.Stat(oldPath) {
+			return buserr.WithName(constant.ErrFileNotFound, oldPath)
+		}
+		// 非法移动
+		if oldPath == m.NewPath || strings.Contains(m.NewPath, filepath.Clean(oldPath)+"/") {
+			return buserr.New(constant.ErrMovePathFailed)
+		}
+	}
+	// 剪切
+	if m.Type == "cut" {
+		return fo.Cut(m.OldPaths, m.NewPath, m.Name, m.Cover)
+	}
+	// 拷贝
+	var errs []error
+	if m.Type == "copy" {
+		for _, src := range m.OldPaths {
+			if err := fo.CopyAndReName(src, m.NewPath, m.Name, m.Cover); err != nil {
+				errs = append(errs, err)
+				global.GVA_LOG.Error(fmt.Sprintf("copy file [%s] to [%s] failed, err: %s", src, m.NewPath, err.Error()))
+			}
+		}
+	}
+
+	var errString string
+	for _, err := range errs {
+		errString += err.Error() + "\n"
+	}
+	if errString != "" {
+		return errors.New(errString)
+	}
+	return nil
+}
+
+func (f *FileRWService) ChangeName(req request.FileRename) error {
+	fo := files.NewFileOp()
+	return fo.Rename(req.OldName, req.NewName)
 }
