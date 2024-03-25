@@ -98,6 +98,11 @@ const save = async() => {
                type: 'success',
                message: '创建/更改成功'
              })
+           }else{
+            ElMessage({
+               type: 'error',
+               message: '创建/更改失败'
+             })
            }
        })
 }

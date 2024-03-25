@@ -283,18 +283,18 @@
             <ChangeRole ref="roleRef" @close="search" />
             <Compress ref="compressRef" @close="search" />
             <Decompress ref="deCompressRef" @close="search" />
-            <CodeEditor ref="codeEditorRef" @close="search" />
+            <!-- <CodeEditor ref="codeEditorRef" @close="search" /> -->
             <FileRename ref="renameRef" @close="search" />
             <Upload ref="uploadRef" @close="search" />
             <Wget ref="wgetRef" @close="closeWget" />
             <Move ref="moveRef" @close="closeMovePage" />
             <Download ref="downloadRef" @close="search" />
             <Process :open="processPage.open" @close="closeProcess" />
-            <Owner ref="chownRef" @close="search"></Owner>
+            <!-- <Owner ref="chownRef" @close="search"></Owner> -->
             <Detail ref="detailRef" />
             <DeleteFile ref="deleteRef" @close="search" />
-            <RecycleBin ref="recycleBinRef" @close="search" />
-            <Favorite ref="favoriteRef" @close="search" />
+            <!-- <RecycleBin ref="recycleBinRef" @close="search" /> -->
+            <!-- <Favorite ref="favoriteRef" @close="search" /> -->
             <BatchRole ref="batchRoleRef" @close="search" />
         </LayoutContent>
     </div>
@@ -328,17 +328,17 @@ import Compress from './compress/index.vue';
 import Decompress from './decompress/index.vue';
 import Upload from './upload/index.vue';
 import FileRename from './rename/index.vue';
-// import CodeEditor from './code-editor/index.vue';
+import CodeEditor from './code-editor/index.vue';
 import Wget from './wget/index.vue';
 import Move from './move/index.vue';
 import Download from './download/index.vue';
-// import Owner from './chown/index.vue';
+import Owner from './chown/index.vue';
 import DeleteFile from './delete/index.vue';
 import Process from './process/index.vue';
 import Detail from './detail/index.vue';
-// import RecycleBin from './recycle-bin/index.vue';
-// import Favorite from './favorite/index.vue';
-// import BatchRole from './batch-role/index.vue';
+import RecycleBin from './recycle-bin/index.vue';
+import Favorite from './favorite/index.vue';
+import BatchRole from './batch-role/index.vue';
 
 const globalStore = GlobalStore();
 
@@ -469,7 +469,8 @@ const open = async (row: File.File) => {
 
         jump(req.path);
     } else {
-        openCodeEditor(row.path, row.extension);
+        MsgWarning('当前版本不支持预览文件，敬请期待')
+        // openCodeEditor(row.path, row.extension);
     }
 };
 
@@ -810,23 +811,23 @@ const buttons = [
             return row.isDir;
         },
     },
-    {
-        label: i18n.global.t('file.deCompress'),
-        click: openDeCompress,
-        disabled: (row: File.File) => {
-            return row.isDir;
-        },
-    },
+    // {
+    //     label: i18n.global.t('file.deCompress'),
+    //     click: openDeCompress,
+    //     disabled: (row: File.File) => {
+    //         return row.isDir;
+    //     },
+    // },
     {
         label: i18n.global.t('file.mode'),
         click: openMode,
     },
-    {
-        label: i18n.global.t('file.compress'),
-        click: (row: File.File) => {
-            openCompress([row]);
-        },
-    },
+    // {
+    //     label: i18n.global.t('file.compress'),
+    //     click: (row: File.File) => {
+    //         openCompress([row]);
+    //     },
+    // },
     {
         label: i18n.global.t('file.rename'),
         click: openRename,
