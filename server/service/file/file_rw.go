@@ -161,7 +161,44 @@ func (f *FileRWService) ChangeName(req request.FileRename) error {
 	return fo.Rename(req.OldName, req.NewName)
 }
 
+func (f *FileRWService) ChangeOwner(req request.FileRoleUpdate) error {
+	fo := files.NewFileOp()
+	return fo.ChownR(req.Path, req.User, req.Group, req.Sub)
+}
+
+func (f *FileRWService) ChangeMode(op request.FileCreate) error {
+	fo := files.NewFileOp()
+	return fo.ChmodR(op.Path, op.Mode, op.Sub)
+}
+
+func (f *FileRWService) BatchChangeModeAndOwner(op request.FileRoleReq) error {
+	fo := files.NewFileOp()
+	for _, path := range op.Paths {
+		if !fo.Stat(path) {
+			return buserr.New(constant.ErrPathNotFound)
+		}
+		if err := fo.ChownR(path, op.User, op.Group, op.Sub); err != nil {
+			return err
+		}
+		if err := fo.ChmodR(path, op.Mode, op.Sub); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (f *FileRWService) GetContent(op request.FileContentReq) (response.FileInfo, error) {
+	info, err := files.NewFileInfo(files.FileOption{
+		Path:   op.Path,
+		Expand: true,
+	})
+	if err != nil {
+		return response.FileInfo{}, err
+	}
+	return response.FileInfo{FileInfo: *info}, nil
+}
+
 // TODO 检查是否拥有权限
-func (f *FileRWService) CheckPermission(authID uint) error {
-	panic("implement me")
+func (f *FileRWService) CheckPermission(authID uint) bool {
+	return true
 }

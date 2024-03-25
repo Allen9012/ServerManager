@@ -166,10 +166,11 @@ func (frw *FileRWApi) MoveFile(c *gin.Context) {
 		return
 	}
 	if err = FRWService.MvFile(req); err != nil {
+		global.GVA_LOG.Error(fmt.Sprintf("MoveFile fail: %v", err))
 		response.FailWithMessage("ErrInternalServer", c)
 		return
 	}
-	response.OkWithData(true, c)
+	response.OkWithData(nil, c)
 }
 
 // @Tags File
@@ -189,10 +190,113 @@ func (frw *FileRWApi) ChangeFileName(c *gin.Context) {
 		return
 	}
 	if err = FRWService.ChangeName(req); err != nil {
+		global.GVA_LOG.Error(fmt.Sprintf("ChangeFileName fail: %v", err))
 		response.FailWithMessage("ErrInternalServer", c)
 		return
 	}
 	response.OkWithData(true, c)
+}
+
+// @Tags File
+// @Summary Change file owner
+// @Description 修改文件用户/组
+// @Accept json
+// @Param request body request.FileRoleUpdate true "request"
+// @Success 200
+// @Security ApiKeyAuth
+// @Router /files/owner [post]
+// @x-panel-log {"bodyKeys":["path","user","group"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"修改用户/组 [paths] => [user]/[group]","formatEN":"Change owner [paths] => [user]/[group]"}
+func (frw *FileRWApi) ChangeFileOwner(c *gin.Context) {
+	var req request.FileRoleUpdate
+	var err error
+
+	if err = c.ShouldBindJSON(&req); err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	if err := FRWService.ChangeOwner(req); err != nil {
+		global.GVA_LOG.Error(fmt.Sprintf("ChangeFileOwner fail: %v", err))
+		response.FailWithMessage("ErrInternalServer", c)
+		return
+	}
+	response.OkWithData(nil, c)
+}
+
+// @Tags File
+// @Summary Change file mode
+// @Description 修改文件权限
+// @Accept json
+// @Param request body request.FileCreate true "request"
+// @Success 200
+// @Security ApiKeyAuth
+// @Router /files/mode [post]
+// @x-panel-log {"bodyKeys":["path","mode"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"修改权限 [paths] => [mode]","formatEN":"Change mode [paths] => [mode]"}
+func (frw *FileRWApi) ChangeFileMode(c *gin.Context) {
+	var req request.FileCreate
+	var err error
+
+	if err = c.ShouldBindJSON(&req); err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	err = FRWService.ChangeMode(req)
+	if err != nil {
+		global.GVA_LOG.Error(fmt.Sprintf("ChangeFileMode fail: %v", err))
+		response.FailWithMessage("ErrInternalServer", c)
+		return
+	}
+	response.OkWithData(nil, c)
+}
+
+// @Tags File
+// @Summary Batch change file mode and owner
+// @Description 批量修改文件权限和用户/组
+// @Accept json
+// @Param request body request.FileRoleReq true "request"
+// @Success 200
+// @Security ApiKeyAuth
+// @Router /files/batch/role [post]
+// @x-panel-log {"bodyKeys":["paths","mode","user","group"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"批量修改文件权限和用户/组 [paths] => [mode]/[user]/[group]","formatEN":"Batch change file mode and owner [paths] => [mode]/[user]/[group]"}
+func (frw *FileRWApi) BatchChangeModeAndOwner(c *gin.Context) {
+	var req request.FileRoleReq
+	var err error
+
+	if err = c.ShouldBindJSON(&req); err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	if err := FRWService.BatchChangeModeAndOwner(req); err != nil {
+		global.GVA_LOG.Error(fmt.Sprintf("BatchChangeModeAndOwner fail: %v", err))
+		response.FailWithMessage("ErrInternalServer", c)
+		return
+	}
+	response.OkWithData(nil, c)
+}
+
+// @Tags File
+// @Summary Load file content
+// @Description 获取文件内容
+// @Accept json
+// @Param request body request.FileContentReq true "request"
+// @Success 200 {object} response.FileInfo
+// @Security ApiKeyAuth
+// @Router /files/content [post]
+// @x-panel-log {"bodyKeys":["path"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"获取文件内容 [path]","formatEN":"Load file content [path]"}
+func (frw *FileRWApi) GetContent(c *gin.Context) {
+	var req request.FileContentReq
+	var err error
+
+	if err = c.ShouldBindJSON(&req); err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	info, err := FRWService.GetContent(req)
+	if err != nil {
+		global.GVA_LOG.Error(fmt.Sprintf("GetContent fail: %v", err))
+		response.FailWithMessage("ErrInternalServer", c)
+		return
+	}
+	response.OkWithData(info, c)
 }
 
 // @Tags File
@@ -202,7 +306,7 @@ func (frw *FileRWApi) ChangeFileName(c *gin.Context) {
 // @Param request body request.FileDownload true "request"
 // @Success 200
 // @Security ApiKeyAuth
-// @Router /files/download [post]
+// @Router /files/download [get]
 // @x-panel-log {"bodyKeys":["name"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"下载文件 [name]","formatEN":"Download file [name]"}
 func (frw *FileRWApi) Download(c *gin.Context) {
 	filePath := c.Query("path")
@@ -212,7 +316,7 @@ func (frw *FileRWApi) Download(c *gin.Context) {
 		return
 	}
 	id := utils.GetUserAuthorityId(c)
-	if err = FRWService.CheckPermission(id); err != nil {
+	if ok := FRWService.CheckPermission(id); !ok {
 		response.FailWithMessage("Err Permission Denied", c)
 		return
 	}
@@ -234,6 +338,12 @@ func (frw *FileRWApi) UploadFiles(c *gin.Context) {
 	form, err := c.MultipartForm()
 	if err != nil {
 		response.FailWithMessage("ErrTypeInvalidParams", c)
+		return
+	}
+	// 权限校验
+	id := utils.GetUserAuthorityId(c)
+	if ok := FRWService.CheckPermission(id); !ok {
+		response.FailWithMessage("Err Permission Denied", c)
 		return
 	}
 	files := form.File["file"]
