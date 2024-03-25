@@ -399,7 +399,7 @@ export function getIcon(extention: string): string {
 // }
 
 export function downloadFile(filePath: string) {
-    let url = `${process.env.VITE_API_URL as string}/files/download?`;
+    let url = 'api/files/download?';
     window.open(url + 'path=' + filePath, '_blank');
 }
 

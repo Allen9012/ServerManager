@@ -1,4 +1,4 @@
-<!-- <template>
+<template>
     <el-drawer v-model="open" :before-close="handleClose" :close-on-click-modal="false" size="50%">
         <template #header>
             <DrawerHeader :header="$t('file.setRole')" :back="handleClose" />
@@ -33,7 +33,7 @@
 import DrawerHeader from '@/components/drawer-header/index.vue';
 import { reactive, ref } from 'vue';
 import { File } from '@/api/interface/file';
-// import { BatchChangeRole } from '@/api/files';
+import { BatchChangeRole } from '@/api/files';
 import i18n from '@/lang';
 import FileRole from '@/components/file-role/index.vue';
 import { MsgSuccess } from '@/utils/message';
@@ -105,4 +105,4 @@ const submit = async () => {
 };
 
 defineExpose({ acceptParams });
-</script> -->
+</script>

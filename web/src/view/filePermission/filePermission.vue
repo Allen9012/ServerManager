@@ -365,8 +365,8 @@ const closeDialog = () => {
 }
 // 弹窗确定
 const enterDialog = async () => {
-     elFormRef.value?.validate( async (valid) => {
-             if (!valid) return
+      elFormRef.value?.validate( async (valid) => {
+              if (!valid) return
               let res
               switch (type.value) {
                 case 'create':
@@ -386,7 +386,11 @@ const enterDialog = async () => {
                 })
                 closeDialog()
                 getTableData()
-              }
+              }else{
+                ElMessage({
+                  type: 'error',
+                  message: '创建/更改失败'
+                })}
       })
 }
 
