@@ -81,10 +81,13 @@ func Routers() *gin.Engine {
 		exampleRouter.InitFileUploadAndDownloadRouter(PrivateGroup) // 文件上传下载功能路由
 
 	}
+	// 不管api权限分配，单独做权限管控(和api无关，和文件有关)
+	FileGroup := Router.Group(global.GVA_CONFIG.System.RouterPrefix)
+	FileGroup.Use(middleware.JWTAuth())
 	{
 		fileRouter := router.RouterGroupApp.File
-		fileRouter.InitFilePermissionRouter(PrivateGroup)
-		fileRouter.InitFileRWRouter(PublicGroup)
+		fileRouter.InitFilePermissionRouter(FileGroup)
+		fileRouter.InitFileRWRouter(FileGroup)
 	}
 
 	global.GVA_LOG.Info("router register success")

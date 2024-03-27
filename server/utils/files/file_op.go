@@ -1,6 +1,7 @@
 package files
 
 import (
+	"errors"
 	"fmt"
 	"github.com/Allen9012/ServerManager/server/utils/cmd"
 	"github.com/spf13/afero"
@@ -8,6 +9,7 @@ import (
 	"os"
 	"path"
 	"path/filepath"
+	"time"
 )
 
 type FileOp struct {
@@ -121,4 +123,54 @@ func (f FileOp) CopyAndReName(src, dst, name string, cover bool) error {
 
 func (f FileOp) Rename(oldName string, newName string) error {
 	return f.Fs.Rename(oldName, newName)
+}
+
+func (f FileOp) ChownR(dst string, uid string, gid string, sub bool) error {
+	cmdStr := fmt.Sprintf(`chown %s:%s "%s"`, uid, gid, dst)
+	if sub {
+		cmdStr = fmt.Sprintf(`chown -R %s:%s "%s"`, uid, gid, dst)
+	}
+	if cmd.HasNoPasswordSudo() {
+		cmdStr = fmt.Sprintf("sudo %s", cmdStr)
+	}
+	if msg, err := cmd.ExecWithTimeOut(cmdStr, 2*time.Second); err != nil {
+		if msg != "" {
+			return errors.New(msg)
+		}
+		return err
+	}
+	return nil
+}
+
+func (f FileOp) Chown(dst string, uid int, gid int) error {
+	return f.Fs.Chown(dst, uid, gid)
+}
+
+func (f FileOp) Chmod(dst string, mode fs.FileMode) error {
+	return f.Fs.Chmod(dst, mode)
+}
+
+func (f FileOp) ChmodR(dst string, mode int64, sub bool) error {
+	cmdStr := fmt.Sprintf(`chmod %v "%s"`, fmt.Sprintf("%04o", mode), dst)
+	if sub {
+		cmdStr = fmt.Sprintf(`chmod -R %v "%s"`, fmt.Sprintf("%04o", mode), dst)
+	}
+	if cmd.HasNoPasswordSudo() {
+		cmdStr = fmt.Sprintf("sudo %s", cmdStr)
+	}
+	if msg, err := cmd.ExecWithTimeOut(cmdStr, 2*time.Second); err != nil {
+		if msg != "" {
+			return errors.New(msg)
+		}
+		return err
+	}
+	return nil
+}
+
+func (f FileOp) RmRf(dst string) error {
+	return cmd.ExecCmd(fmt.Sprintf("rm -rf %s", dst))
+}
+
+func (f FileOp) CleanDir(dst string) error {
+	return cmd.ExecCmd(fmt.Sprintf("rm -rf %s/*", dst))
 }
