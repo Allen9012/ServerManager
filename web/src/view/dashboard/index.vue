@@ -43,7 +43,7 @@
               </div>
             </el-col>
           </el-row>
-          <div>
+          <!-- <div>
             <div class="gva-top-card-left-item">
               使用教学：
               <a
@@ -60,7 +60,7 @@
                 href="https://plugin.gin-vue-admin.com/#/layout/home"
               >https://plugin.gin-vue-admin.com</a>
             </div>
-          </div>
+          </div> -->
         </div>
         <img
           src="@/assets/dashboard.png"
@@ -99,7 +99,7 @@
         </el-row>
       </div>
     </div>
-    <div class="gva-card-box">
+    <!-- <div class="gva-card-box">
       <div class="gva-card">
         <div class="gva-card-title">数据统计</div>
         <div class="p-4">
@@ -118,8 +118,8 @@
             </el-col>
           </el-row>
         </div>
-      </div>
-    </div>
+      </div> 
+    </div>-->
   </div>
 </template>
 
@@ -152,30 +152,37 @@ const toolCards = ref([
     bg: 'rgba(105, 192, 255,.3)'
   },
   {
-    label: '菜单管理',
-    icon: 'menu',
-    name: 'menu',
+    label: '文件管理',
+    icon: 'folder-checked',
+    name: 'filePermission',
     color: '#b37feb',
     bg: 'rgba(179, 127, 235,.3)'
   },
   {
-    label: '代码生成器',
+    label: '服务器状态',
     icon: 'cpu',
-    name: 'autoCode',
+    name: 'state',
     color: '#ffd666',
     bg: 'rgba(255, 214, 102,.3)'
   },
+  // {
+  //   label: '表单生成器',
+  //   icon: 'document-checked',
+  //   name: 'formCreate',
+  //   color: '#ff85c0',
+  //   bg: 'rgba(255, 133, 192,.3)'
+  // },
   {
-    label: '表单生成器',
-    icon: 'document-checked',
-    name: 'formCreate',
-    color: '#ff85c0',
-    bg: 'rgba(255, 133, 192,.3)'
+    label: '文件访问',
+    icon: 'aim',
+    name: 'FS',
+    color: '#5cdbd3',
+    bg: 'rgba(92, 219, 211,.3)'
   },
   {
-    label: '关于我们',
-    icon: 'user',
-    name: 'about',
+    label: '操作历史',
+    icon: 'pie-chart',
+    name: 'operation',
     color: '#5cdbd3',
     bg: 'rgba(92, 219, 211,.3)'
   }

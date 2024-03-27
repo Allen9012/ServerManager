@@ -224,10 +224,10 @@
             type="primary"
             @click="createPlug"
           >创建</el-button>
-          <el-icon
+          <!-- <el-icon
             class="cursor-pointer ml-3"
             @click="toDoc('https://www.bilibili.com/video/BV1kv4y1g7nT?p=13&vd_source=f2640257c21e3b547a790461ed94875e')"
-          ><VideoCameraFilled /></el-icon>
+          ><VideoCameraFilled /></el-icon> -->
         </el-form-item>
       </el-form>
 
