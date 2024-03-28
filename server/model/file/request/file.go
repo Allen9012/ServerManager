@@ -12,10 +12,20 @@ type FileContentReq struct {
 	Path string `json:"path" validate:"required"`
 }
 
-//type SearchUploadWithPage struct {
-//	dto.PageInfo
-//	Path string `json:"path" validate:"required"`
-//}
+type SearchUploadWithPage struct {
+	PageInfo
+	Path string `json:"path" validate:"required"`
+}
+
+type PageInfo struct {
+	Page     int `json:"page" validate:"required,number"`
+	PageSize int `json:"pageSize" validate:"required,number"`
+}
+
+type PageResult struct {
+	Total int64       `json:"total"`
+	Items interface{} `json:"items"`
+}
 
 type FileCreate struct {
 	Path      string `json:"path" validate:"required"`

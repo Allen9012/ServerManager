@@ -20,20 +20,21 @@ func (FPService *FilePermissionService) CreateFilePermission(FP *file.FilePermis
 	if FP.PermissionState == 0 {
 		return errors.New("blank permission_state not allowed")
 	}
-	if err = isRegixValid(FP.Regexp); err != nil {
+	if err = isRegexValid(FP); err != nil {
 		return err
 	}
 	// 判断是否存在此角色
-	var user sysModel.SysUser
-	tx := global.GVA_DB.Where("id = ?", FP.UserId).Find(&user)
+	var user sysModel.SysUserAuthority
+	tx := global.GVA_DB.Where("sys_authority_authority_id = ?", FP.UserId).Find(&user)
 	if tx.RowsAffected == 0 {
-		return errors.New(fmt.Sprintf("no user for userId: %d", FP.UserId))
+		return errors.New(fmt.Sprintf("no Authority for id: %d", FP.UserId))
 	}
 	// 不允许插入重复的字段
 	result := global.GVA_DB.Where("user_id = ?", FP.UserId).Where("`regexp` = ?", FP.Regexp).Where("permission_state = ?", FP.PermissionState).First(&FP)
 	if result.RowsAffected != 0 {
-		return errors.New(fmt.Sprintf("existed reg for userId: %d", FP.UserId))
+		return errors.New(fmt.Sprintf("existed reg for id: %d", FP.UserId))
 	}
+
 	err = global.GVA_DB.Create(FP).Error
 	return err
 }
@@ -55,19 +56,19 @@ func (FPService *FilePermissionService) DeleteFilePermissionByIds(ids request.Id
 // UpdateFilePermission 更新描述文件权限的信息记录
 // Author Allen
 func (FPService *FilePermissionService) UpdateFilePermission(FP file.FilePermission) (err error) {
-	if err = isRegixValid(FP.Regexp); err != nil {
+	if err = isRegexValid(&FP); err != nil {
 		return err
 	}
 	// 判断是否存在此角色
-	var user sysModel.SysUser
-	tx := global.GVA_DB.Where("id = ?", FP.UserId).Find(&user)
+	var user sysModel.SysUserAuthority
+	tx := global.GVA_DB.Where("sys_authority_authority_id = ?", FP.UserId).Find(&user)
 	if tx.RowsAffected == 0 {
-		return errors.New(fmt.Sprintf("no user for userId: %d", FP.UserId))
+		return errors.New(fmt.Sprintf("no Authority for id: %d", FP.UserId))
 	}
 	// 不允许插入重复的字段
 	result := global.GVA_DB.Where("user_id = ?", FP.UserId).Where("`regexp` = ?", FP.Regexp).Where("permission_state = ?", FP.PermissionState).First(&FP)
 	if result.RowsAffected != 0 {
-		return errors.New(fmt.Sprintf("existed reg for userId: %d", FP.UserId))
+		return errors.New(fmt.Sprintf("existed reg for id: %d", FP.UserId))
 	}
 	err = global.GVA_DB.Save(&FP).Error
 	return err
