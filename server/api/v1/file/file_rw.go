@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/Allen9012/ServerManager/server/global"
 	"github.com/Allen9012/ServerManager/server/model/common/response"
+	"github.com/Allen9012/ServerManager/server/model/file"
 	"github.com/Allen9012/ServerManager/server/model/file/request"
 	"github.com/Allen9012/ServerManager/server/service"
 	"github.com/Allen9012/ServerManager/server/utils"
@@ -300,6 +301,34 @@ func (frw *FileRWApi) GetContent(c *gin.Context) {
 }
 
 // @Tags File
+// @Summary Page file
+// @Description 分页获取上传文件
+// @Accept json
+// @Param request body request.SearchUploadWithPage true "request"
+// @Success 200 {array} response.FileInfo
+// @Security ApiKeyAuth
+// @Router /files/upload/search [post]
+func (frw *FileRWApi) SearchUploadWithPage(c *gin.Context) {
+	var req request.SearchUploadWithPage
+	var err error
+
+	if err = c.ShouldBindJSON(&req); err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	total, files, err := FRWService.SearchUploadWithPage(req)
+	if err != nil {
+		global.GVA_LOG.Error(fmt.Sprintf("SearchUploadWithPage fail: %v", err))
+		response.FailWithMessage("ErrInternalServer", c)
+		return
+	}
+	response.OkWithData(request.PageResult{
+		Items: files,
+		Total: total,
+	}, c)
+}
+
+// @Tags File
 // @Summary Download file
 // @Description 下载文件
 // @Accept json
@@ -310,20 +339,22 @@ func (frw *FileRWApi) GetContent(c *gin.Context) {
 // @x-panel-log {"bodyKeys":["name"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"下载文件 [name]","formatEN":"Download file [name]"}
 func (frw *FileRWApi) Download(c *gin.Context) {
 	filePath := c.Query("path")
-	file, err := os.Open(filePath)
+	f, err := os.Open(filePath)
 	if err != nil {
 		response.FailWithMessage("ErrTypeInvalidParams", c)
 		return
 	}
 	id := utils.GetUserAuthorityId(c)
-	if ok := FRWService.CheckPermission(id); !ok {
+	global.GVA_LOG.Debug(fmt.Sprintf("Download filePath: %v", filePath))
+	if ok := FRWService.CheckPermission(id, filePath, file.Download); !ok {
+		global.GVA_LOG.Error(fmt.Sprintf("Download Permission Denied authid: %d, filePath: %s", id, filePath))
 		response.FailWithMessage("Err Permission Denied", c)
 		return
 	}
-	info, _ := file.Stat()
+	info, _ := f.Stat()
 	c.Header("Content-Length", strconv.FormatInt(info.Size(), 10))
 	c.Header("Content-Disposition", "attachment; filename*=utf-8''"+url.PathEscape(info.Name()))
-	http.ServeContent(c.Writer, c.Request, info.Name(), info.ModTime(), file)
+	http.ServeContent(c.Writer, c.Request, info.Name(), info.ModTime(), f)
 }
 
 // @Tags File
@@ -342,10 +373,7 @@ func (frw *FileRWApi) UploadFiles(c *gin.Context) {
 	}
 	// 权限校验
 	id := utils.GetUserAuthorityId(c)
-	if ok := FRWService.CheckPermission(id); !ok {
-		response.FailWithMessage("Err Permission Denied", c)
-		return
-	}
+
 	files := form.File["file"]
 	paths := form.Value["path"]
 	if len(paths) == 0 || !strings.Contains(paths[0], "/") {
@@ -359,13 +387,21 @@ func (frw *FileRWApi) UploadFiles(c *gin.Context) {
 			return
 		}
 	}
+	// 上传的时候检查的是dir是否有没有权限，所以没有权限所有的文件都不能上传
+	global.GVA_LOG.Debug(fmt.Sprintf("upload dir: %v", dir))
+	if ok := FRWService.CheckPermission(id, dir, file.Upload); !ok {
+		global.GVA_LOG.Error(fmt.Sprintf("Download Permission Denied authid: %d, dir: %s", id, dir))
+		response.FailWithMessage("Err Permission Denied", c)
+		return
+	}
+	// 记录上传失败的文件
 	success := 0
 	failures := make(buserr.MultiErr)
-	for _, file := range files {
-		if err := c.SaveUploadedFile(file, path.Join(paths[0], file.Filename)); err != nil {
-			e := fmt.Errorf("upload [%s] file failed, err: %v", file.Filename, err)
-			failures[file.Filename] = e
-			global.GVA_LOG.Error(fmt.Sprintf("upload [%s] file failed, err: %v", file.Filename, err))
+	for _, f := range files {
+		if err := c.SaveUploadedFile(f, path.Join(paths[0], f.Filename)); err != nil {
+			e := fmt.Errorf("upload [%s] file failed, err: %v", f.Filename, err)
+			failures[f.Filename] = e
+			global.GVA_LOG.Error(fmt.Sprintf("upload [%s] file failed, err: %v", f.Filename, err))
 			continue
 		}
 		success++

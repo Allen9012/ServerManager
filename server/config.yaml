@@ -205,7 +205,7 @@ tencent-cos:
     base-url: https://gin.vue.admin
     path-prefix: github.com/Allen9012/ServerManager/server
 zap:
-    level: info
+    level: debug
     prefix: '[github.com/Allen9012/ServerManager/server]'
     format: console
     director: log

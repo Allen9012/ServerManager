@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/Allen9012/ServerManager/server/global"
+	"github.com/Allen9012/ServerManager/server/model/file"
 	"github.com/Allen9012/ServerManager/server/model/file/request"
 	"github.com/Allen9012/ServerManager/server/model/file/response"
 	"github.com/Allen9012/ServerManager/server/utils/buserr"
@@ -12,6 +13,7 @@ import (
 	"io/fs"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strings"
 )
 
@@ -198,7 +200,68 @@ func (f *FileRWService) GetContent(op request.FileContentReq) (response.FileInfo
 	return response.FileInfo{FileInfo: *info}, nil
 }
 
-// TODO 检查是否拥有权限
-func (f *FileRWService) CheckPermission(authID uint) bool {
-	return true
+func (f *FileRWService) CheckPermission(authID uint, filePath string, flag file.RWAction) bool {
+	if authID == constant.Admin {
+		return true
+	}
+	// 取出所有和ID相关的regexp
+	var permissions []file.FilePermission
+	result := global.GVA_DB.Where("user_id = ?", authID).Find(&permissions)
+	if result.RowsAffected == 0 {
+		global.GVA_LOG.Error("no permission")
+		return false
+	}
+	return _checkPermission(permissions, filePath, flag)
+}
+
+func _checkPermission(permissions []file.FilePermission, filePath string, flag file.RWAction) bool {
+	for _, permission := range permissions {
+		if flag == file.Download && (permission.PermissionState != file.R && permission.PermissionState != file.RW) {
+			// 读
+			continue
+		} else if flag == file.Upload && (permission.PermissionState != file.W && permission.PermissionState != file.RW) {
+			// 写
+			continue
+		} else {
+			re := regexp.MustCompile(permission.Regexp)
+			if re.MatchString(filePath) {
+				//global.GVA_LOG.Debug(fmt.Sprintf("permission match, reg: %s, filePath: %s", permission.Regexp, filePath))
+				return true
+			} else {
+				continue
+			}
+		}
+	}
+	// 对比当前文件是否满足权限
+	return false
+}
+
+func (f *FileRWService) SearchUploadWithPage(req request.SearchUploadWithPage) (int64, interface{}, error) {
+	var (
+		files    []response.UploadInfo
+		backData []response.UploadInfo
+	)
+	_ = filepath.Walk(req.Path, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return nil
+		}
+		if !info.IsDir() {
+			files = append(files, response.UploadInfo{
+				CreatedAt: info.ModTime().Format("2006-01-02 15:04:05"),
+				Size:      int(info.Size()),
+				Name:      info.Name(),
+			})
+		}
+		return nil
+	})
+	total, start, end := len(files), (req.Page-1)*req.PageSize, req.Page*req.PageSize
+	if start > total {
+		backData = make([]response.UploadInfo, 0)
+	} else {
+		if end >= total {
+			end = total
+		}
+		backData = files[start:end]
+	}
+	return int64(total), backData, nil
 }
